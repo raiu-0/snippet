@@ -1,0 +1,16 @@
+body{
+    background-image: url('../images/bgline-sign-up-modified.png'), linear-gradient(var(--clr-light-bg) 40%, var(--clr-primary));
+    background-size: cover;
+}
+
+#sign-up{
+    gap: 0.40rem;
+    padding: 2rem;
+    width: 30rem;
+}
+
+#sign-up-button{
+    color: var(--clr-secondary-text);
+    font-weight: bold;
+    background-color: var(--clr-primary);
+}

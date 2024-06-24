@@ -1,0 +1,29 @@
+body {
+    background-image: url('../images/bgline-modified.png'), linear-gradient(110deg, var(--clr-light-bg) 40%, var(--clr-primary));
+    background-size: cover;
+}
+
+#login {
+    width: 20rem;
+}
+
+#login-form {
+    gap: 0.40rem;
+    width: 100%;
+}
+
+#login-button{
+    background-color: var(--clr-primary-lighter);
+    color: var(--clr-primary-darker);
+    font-weight: bold;
+    padding: 0 2rem;
+    transition: filter 0.2s;
+}
+
+#create-account-button{
+    background-color: var(--clr-primary);
+    color: var(--clr-secondary-text);
+    font-weight: bold;
+    padding: 0 2rem;
+    transition: filter 0.2s;
+}
