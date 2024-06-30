@@ -1,5 +1,5 @@
 body{
-    background-image: url('../images/bgline-sign-up-modified.png'), linear-gradient(var(--clr-light-bg) 40%, var(--clr-primary));
+    background-image: url('../images/bgline-sign-up-modified.png'), linear-gradient(var(--clr-primary-lighter) 40%, var(--clr-primary));
     background-size: cover;
 }
 
@@ -10,6 +10,7 @@ body{
 }
 
 #sign-up-button{
+    margin-top: 1rem;
     color: var(--clr-secondary-text);
     font-weight: bold;
     background-color: var(--clr-primary);

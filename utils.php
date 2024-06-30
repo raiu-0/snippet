@@ -6,7 +6,7 @@ function validateEmail($email)
 
 function validateName($name)
 {
-    return preg_match('[a-zA-Z -_0-9]', $name);
+    return preg_match('/[a-zA-Z -_0-9]/', $name);
 }
 
 function validateBirthday($birthday)
@@ -14,15 +14,13 @@ function validateBirthday($birthday)
     $birthday = explode('-', $birthday);
     if (count($birthday) !== 3)
         return false;
-    return checkdate($birthday[1], $birthday[0], $birthday[2]);
+    return checkdate($birthday[1], $birthday[2], $birthday[0]);
 }
 
 function validateUsername($name)
 {
-    return preg_match('[a-zA-Z-_0-9]', $name);
+    return preg_match('/[a-zA-Z_0-9]/', $name);
 }
-
-
 
 
 function validateData($data, $type)
@@ -43,9 +41,19 @@ function validateData($data, $type)
         $validity = validateUsername($data);
         return ['state' => $validity, 'msg' => $validity ? '' : 'Invalid characters used.'];
     } else if ($type === 'password') {
-        if(strlen($data) < 8)
-            return ['state' => false, 'msg' => 'Password must be at least 8 characters long.'];
-        if(!preg_match('[a-z]', $data))
-        return ['state' => false, 'msg' => 'Password must have a .'];
+        $msg = [];
+        if(strlen($data) < 6)
+            $msg[] = 'Password must be at least 6 characters long.';
+        if(!preg_match('/[a-z]/', $data))
+            $msg[] = 'Password must have a lowercase letter.';
+        if(!preg_match('/[A-Z]/', $data))
+            $msg[] = 'Password must have an uppercase letter.';
+        if(!preg_match('/[0-9]/', $data))
+            $msg[] = 'Password must have a digit.';
+        if(!preg_match('/\W/', $data))
+            $msg[] = 'Password must have a symbol.';
+        if(count($msg))
+            return ['state' => false, 'msg' => $msg];
+        return ['state' => true, 'msg' => ''];
     }
 }

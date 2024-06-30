@@ -3,14 +3,22 @@
     --clr-light-bg-darker: #f0f2f5;
     --clr-light-shadow: #d5d5d5;
     --clr-light-border: #dddfe2;
-    --clr-light-error: #b91212;
+    --clr-light-error: #f98989;
     --clr-primary-text: #000000;
+    --clr-primary-text-light: #747474;
     --clr-secondary-text: #ffffff;
     --clr-primary: #ff55a1;
     --clr-primary-lighter: #ffc1d8;
+    --clr-primary-lightest: #ffdfeb;
     --clr-primary-darker: #6c304b;
     --clr-date-background: #ffffff;
     --clr-date-placeholder: #757575;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 html,
@@ -34,16 +42,16 @@ button {
     padding: 0.25rem 0.5rem;
 }
 
-input[type=date]:not(.has-value):focus{
+input[type=date]:not(.has-value):focus {
     color: var(--clr-date-placeholder) !important;
 }
 
-input[type=date]:not(.has-value){
+input[type=date]:not(.has-value) {
     position: relative;
     color: var(--clr-date-background);
 }
 
-input[type=date]:not(.has-value):before{
+input[type=date]:not(.has-value):before {
     bottom: calc(50% - 0.5rem);
     font-family: sans-serif;
     position: absolute;
@@ -51,11 +59,11 @@ input[type=date]:not(.has-value):before{
     content: attr(placeholder);
 }
 
-input[type=date]:not(.has-value):focus:before{
+input[type=date]:not(.has-value):focus:before {
     content: '';
 }
 
-button{
+button {
     transition: filter 0.2s;
 }
 
@@ -108,8 +116,19 @@ h4 {
     box-shadow: 0 0 5px var(--clr-light-shadow);
 }
 
-.title {
+h1.title {
     --title-size: 4rem;
+}
+
+h2.title {
+    --title-size: 3rem;
+}
+
+h3.title {
+    --title-size: 2rem;
+}
+
+.title {
     color: var(--clr-primary);
     font-size: var(--title-size);
     position: relative;
@@ -160,4 +179,10 @@ h4 {
 .error-msg {
     color: var(--clr-light-error);
     font-size: 0.75rem;
+}
+
+.input-guide {
+    margin-left: 0.3rem;
+    font-size: 0.75rem;
+    color: var(--clr-primary-text-light);
 }
