@@ -1,5 +1,6 @@
 body{
-    background-image: url('../images/bgline-sign-up-modified.png'), linear-gradient(var(--clr-primary-lighter) 40%, var(--clr-primary));
+    background-image: url('../images/backgrounds/bgline-sign-up-modified.png');
+    background-color: var(--clr-bg);
     background-size: cover;
 }
 

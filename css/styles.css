@@ -1,18 +1,11 @@
 :root {
-    --clr-light-bg: #ffffff;
-    --clr-light-bg-darker: #f0f2f5;
-    --clr-light-shadow: #d5d5d5;
-    --clr-light-border: #dddfe2;
-    --clr-light-error: #f98989;
-    --clr-primary-text: #000000;
-    --clr-primary-text-light: #747474;
-    --clr-secondary-text: #ffffff;
-    --clr-primary: #ff55a1;
-    --clr-primary-lighter: #ffc1d8;
-    --clr-primary-lightest: #ffdfeb;
-    --clr-primary-darker: #6c304b;
-    --clr-date-background: #ffffff;
-    --clr-date-placeholder: #757575;
+    --clr-bg: #18191a;
+    --clr-bg-lighter: #242526;
+    --clr-bg-lightest: #3a3b3c;
+    --clr-error: #e12222;
+    --clr-neutral: #e4e6eb;
+    --clr-primary: #ff008f;
+    --clr-placeholder: #afb2b7;
 }
 
 *,
@@ -29,33 +22,41 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Open Sans", sans-serif;
-    color: var(--clr-primary-text);
+    color: var(--clr-neutral);
 }
 
 input[type=text],
 input[type=password],
 input[type=date],
 button {
+    color: var(--clr-neutral);
     height: 2rem;
     border-radius: 5px;
-    border: 1px solid var(--clr-light-border);
+    border: 0; 
     padding: 0.25rem 0.5rem;
+    background-color: var(--clr-bg-lightest);
+}
+
+input[type=text]::placeholder,
+input[type=password]::placeholder,
+input[type=date]::placeholder {
+    color: var(--clr-placeholder);
 }
 
 input[type=date]:not(.has-value):focus {
-    color: var(--clr-date-placeholder) !important;
+    color: var(--clr-placeholder) !important;
 }
 
 input[type=date]:not(.has-value) {
     position: relative;
-    color: var(--clr-date-background);
+    color: var(--clr-bg-lightest);
 }
 
 input[type=date]:not(.has-value):before {
     bottom: calc(50% - 0.5rem);
     font-family: sans-serif;
     position: absolute;
-    color: var(--clr-date-placeholder);
+    color: var(--clr-placeholder);
     content: attr(placeholder);
 }
 
@@ -112,8 +113,7 @@ h4 {
 
 .card {
     border-radius: 10px;
-    background-color: var(--clr-light-bg);
-    box-shadow: 0 0 5px var(--clr-light-shadow);
+    background-color: var(--clr-bg-lighter);
 }
 
 h1.title {
@@ -177,7 +177,7 @@ h3.title {
 }
 
 .error-msg {
-    color: var(--clr-light-error);
+    color: var(--clr-error);
     font-size: 0.75rem;
 }
 

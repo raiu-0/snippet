@@ -1,36 +1,47 @@
 #left-panel {
-    background-color: var(--clr-primary-lightest);
+    background-color: var(--clr-bg);
     width: 20rem;
-    background-color: var(--clr-light-bg);
-    padding: 2rem 3rem 3rem 3rem;
-    border-right: 5px dashed var(--clr-primary);
-    gap: 1rem;
+    padding: 2rem 3rem 3rem 1rem;
 }
 
 #middle-panel {
-    background-color: var(--clr-primary-lighter);
+    padding: 1rem;
+    background-color: var(--clr-bg);
     flex-grow: 1;
 }
 
 #right-panel {
-    background-color: var(--clr-primary-lightest);
-    width: 25rem;
-    border-left: 5px dashed var(--clr-primary);
+    background-color: var(--clr-bg);
+    width: 15rem;
+    border-left: 5px solid var(--clr-primary);
 }
 
-.menu-option {
-    width: fit-content;
-    position: relative;
-    background-color: var(--clr-light-bg);
-    padding: 0.75rem;
-    border-radius: 20px;
-    color: var(--clr-primary-text);
-    transition: filter 0.2s;
+#account-display {
     align-items: center;
 }
 
+.profile-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 0.75rem;
+}
+
+.username-display {
+}
+
+.menu-option {
+    position: relative;
+    padding: 0.75rem;
+    border-radius: 10px;
+    color: var(--clr-secondary-text);
+    align-items: center;
+    transition: 0.2s;
+}
+
 .menu-option:hover {
-    filter: brightness(0.95);
+    background-color: var(--clr-bg-lightest);
 }
 
 .button-link {
@@ -48,6 +59,14 @@
 }
 
 .title {
-    /* align-self: center; */
-    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+#create-post-frame {
+    background-color: var(--clr-bg-lighter);
+    padding: 1rem;
+}
+
+#post-caption {
+    flex-grow: 1;
 }

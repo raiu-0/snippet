@@ -1,5 +1,6 @@
 body {
-    background-image: url('../images/bgline-modified.png'), linear-gradient(110deg, var(--clr-light-bg) 40%, var(--clr-primary));
+    background-image: url('../images/backgrounds/bgline-modified.png');
+    background-color: var(--clr-bg);
     background-size: cover;
 }
 
@@ -13,8 +14,7 @@ body {
 }
 
 #login-button{
-    background-color: var(--clr-primary-lighter);
-    color: var(--clr-primary-darker);
+    background-color: var(--clr-primary);
     font-weight: bold;
     padding: 0 2rem;
     transition: filter 0.2s;
@@ -22,7 +22,6 @@ body {
 
 #create-account-button{
     background-color: var(--clr-primary);
-    color: var(--clr-secondary-text);
     font-weight: bold;
     padding: 0 2rem;
     transition: filter 0.2s;

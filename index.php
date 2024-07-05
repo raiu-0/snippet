@@ -1,6 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+require 'utils/validateManager.php';
+
+session_start();
+if(isset($_SESSION['user'], $_SESSION['name']))
+    header('location: home.php');
+
+$fields = ['identifier', 'password'];
+if (isset($_POST['login'])) {
+    $error = [];
+    validate($fields, $error, $_POST);
+    if (count($error) === 0) {
+        require 'utils/dbManager.php';
+        $con = startDBConnection();
+        $identifier = htmlspecialchars(strip_tags(trim($_POST['identifier'])));
+        $password = htmlspecialchars(strip_tags(trim($_POST['password'])));
+        $getPass = $con->prepare("SELECT username, password, name FROM users WHERE username = ? OR email = ?");
+        $getPass->bind_param('ss', $identifier, $identifier);
+        $getPass->execute();
+        $result = $getPass->get_result();
+        $getPass->close();
+        if (mysqli_num_rows($result) !== 0) {
+            $result = $result->fetch_assoc();
+            if (password_verify($password, $result['password'])) { 
+                $_SESSION['user'] = $result['username'];
+                $_SESSION['name'] = $result['name'];
+                header('location: home.php');
+            } else
+                $error['password'] = 'Wrong password.';
+        } else {
+            $error['identifier'] = 'Username / email not associated with any account.';
+        }
+    }
+
+}
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +57,12 @@
         </div>
         <div class="flex-col wrapper">
             <div class="flex-col wrapper card" id="login">
-                <form class="flex-col" id="login-form">
-                    <input type="text" placeholder="Email">
-                    <span class="error-msg"></span>
-                    <input type="password" placeholder="Password">
-                    <span class="error-msg"></span>
-                    <button id="login-button">Login</button>
+                <form class="flex-col" id="login-form" method="POST">
+                    <input type="text" placeholder="Email / Username" name="identifier" value="<?php printPOSTVal('identifier') ?>">
+                    <?php printError('identifier') ?>
+                    <input type="password" placeholder="Password" name="password" value="<?php printPOSTVal('password') ?>">
+                    <?php printError('password') ?>
+                    <button id="login-button" name="login">Login</button>
                 </form>
                 <hr>
                 <a href="sign-up.php"><button type="button" id="create-account-button">Create an Account</button></a>
@@ -33,4 +70,5 @@
         </div>
     </div>
 </body>
+
 </html>
