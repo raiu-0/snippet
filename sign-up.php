@@ -51,7 +51,7 @@ if (isset($_POST['sign-up'])) {
             <h1 class="title">snippet</h1>
         </div>
         <div class="flex-row wrapper">
-            <form method="POST" class="flex-col card" id="sign-up">
+            <form method="post" class="flex-col card" id="sign-up">
                 <h2 class="card-title">Sign-Up</h2>
                 <hr>
                 <input type="text" name="email" placeholder="Email" value="<?php printPOSTVal('email') ?>">

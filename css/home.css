@@ -1,72 +1,101 @@
-#left-panel {
-    background-color: var(--clr-bg);
-    width: 20rem;
-    padding: 2rem 3rem 3rem 1rem;
-}
-
-#middle-panel {
+#content-panel {
+    width: 50%;
+    min-width: 30rem;
     padding: 1rem;
     background-color: var(--clr-bg);
-    flex-grow: 1;
+    flex-wrap: wrap;
 }
 
 #right-panel {
+    flex-grow: 1;
     background-color: var(--clr-bg);
-    width: 15rem;
     border-left: 5px solid var(--clr-primary);
 }
 
-#account-display {
-    align-items: center;
-}
-
-.profile-icon {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 10px;
-    object-fit: cover;
-    margin-right: 0.75rem;
-}
-
-.username-display {
-}
-
-.menu-option {
-    position: relative;
-    padding: 0.75rem;
-    border-radius: 10px;
-    color: var(--clr-secondary-text);
-    align-items: center;
-    transition: 0.2s;
-}
-
-.menu-option:hover {
-    background-color: var(--clr-bg-lightest);
-}
-
-.button-link {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-}
-
-.menu-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-right: 1rem;
-}
-
-.title {
-    margin-left: 1rem;
+#post-frame {
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #create-post-frame {
+    width: 100%;
     background-color: var(--clr-bg-lighter);
     padding: 1rem;
 }
 
+
 #post-caption {
     flex-grow: 1;
+}
+
+.file-frame {
+    border-radius: 10px;
+    margin: 1rem 0;
+    padding: 0.65rem;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--clr-primary);
+    transition: 0.3s;
+}
+
+.file-frame:hover {
+    background-color: var(--clr-primary-lighter);
+}
+
+.photo-video-label {
+    margin-left: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+#post-media {
+    opacity: 0;
+}
+
+#post-button {
+    background-color: var(--clr-bg-lightest);
+    border-radius: 0 0 10px 10px;
+    height: fit-content;
+    padding: 0.1rem 3rem;
+    font-size: 0.8rem;
+    font-weight: bold; 
+    align-items: center;
+}
+
+#publish-icon {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin-right: 0.25rem;
+}
+
+#media-preview {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: 0;
+    gap: 1rem;
+    transition: height 1s;
+}
+
+#media-preview.has-content {
+    height: 11rem;
+}
+
+.media {
+    flex-shrink: 0;
+    position: relative;
+    height: 10rem;
+}
+
+.media img,
+.media video{
+    border-radius: 10px;
+    height: 100%;
+}
+
+.media button {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
