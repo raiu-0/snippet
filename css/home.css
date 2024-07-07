@@ -1,17 +1,3 @@
-#content-panel {
-    width: 50%;
-    min-width: 30rem;
-    padding: 1rem;
-    background-color: var(--clr-bg);
-    flex-wrap: wrap;
-}
-
-#right-panel {
-    flex-grow: 1;
-    background-color: var(--clr-bg);
-    border-left: 5px solid var(--clr-primary);
-}
-
 #post-frame {
     flex-wrap: wrap;
     justify-content: center;

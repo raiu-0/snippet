@@ -4,6 +4,7 @@
 <?php
 require 'utils/fileManager.php';
 session_start();
+date_default_timezone_set('Asia/Hong_Kong');
 
 if (isset($_POST['publish'])) {
     $postFiles = [];
@@ -26,13 +27,14 @@ if (isset($_POST['publish'])) {
         require 'utils/dbManager.php';
         $con = startDBConnection();
         if (strlen($caption) === 0)
-            insertInto($con, 'posts', null, $_SESSION['user'], null);
+            insertInto($con, 'posts', null, $_SESSION['user'], null, date('Y-m-d H:i:s'));
         else
-            insertInto($con, 'posts', null, $_SESSION['user'], $caption);
+            insertInto($con, 'posts', null, $_SESSION['user'], $caption, date('Y-m-d H:i:s'));
         $postID = mysqli_insert_id($con);
 
         foreach ($postFiles as $files)
             insertInto($con, 'post_files', $postID, $files);
+        endDBConnection($con);
     }
     header('location: home.php');
 }
@@ -51,36 +53,11 @@ if (isset($_POST['publish'])) {
 </head>
 
 <body>
-    <div class="menu-panel flex-col">
-        <div class="account-display flex-row">
-            <img src="images/icons/default-profile-icon.png" alt="" class="profile-icon">
-            <div class="username-display"><?php echo $_SESSION['name'] ?></div>
-        </div>
-        <hr>
-        <div class="menu-option flex-row">
-            <img src="images/icons/home-icon.png" alt="" class="icon-with-label">
-            Home
-            <a href="home.php"><span class="button-link"></span></a>
-        </div>
-        <div class="menu-option flex-row">
-            <img src="images/icons/notifications-icon.png" alt="" class="icon-with-label">
-            Notifications
-            <a href="home.php"><span class="button-link"></span></a>
-        </div>
-        <div class="menu-option flex-row">
-            <img src="images/icons/settings-icon.png" alt="" class="icon-with-label">
-            Settings
-            <a href="home.php"><span class="button-link"></span></a>
-        </div>
-        <div class="menu-option flex-row">
-            <img src="images/icons/account-icon.png" alt="" class="icon-with-label">
-            Account
-            <a href="home.php"><span class="button-link"></span></a>
-        </div>
-    </div>
+    <?php require 'utils/menuPanel.php'; ?>
 
-    <div id="content-panel">
-        <form id="post-frame" class="flex-row" method="post" enctype="multipart/form-data" onsubmit="clearFileInput()">
+    <div class="content-panel flex-col">
+        <form id="post-frame" class="flex-row" method="post" enctype="multipart/form-data"
+            onsubmit="clearFileInput(); return false;">
             <div id="create-post-frame" class="card flex-col">
                 <div class="caption-frame flex-row">
                     <img src="images/icons/default-profile-icon.png" alt="" class="profile-icon">
@@ -100,8 +77,10 @@ if (isset($_POST['publish'])) {
                 Publish
             </button>
         </form>
+        <div id="post-area" class="post-area flex-col">
+        </div>
     </div>
-    <div id="right-panel"></div>
+    <?php require 'utils/searchPanel.php' ?>
 </body>
 
 <template id="exit-template">
@@ -109,5 +88,6 @@ if (isset($_POST['publish'])) {
 </template>
 
 <script src="scripts/preview-script.js"></script>
+<script src="scripts/posts-script.js"></script>
 
 </html>

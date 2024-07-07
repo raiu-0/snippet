@@ -51,3 +51,79 @@ function insertInto($connection, $table, ...$values)
     $insertion->execute();
     $insertion->close();
 }
+
+function getDataByIdentifier($connection, $table, $identifierName, $identifierValue, $multiple = false)
+{
+    $selection = $connection->prepare("SELECT * FROM $table WHERE $identifierName = ?");
+    $selection->bind_param('s', $identifierValue);
+    $selection->execute();
+    $result = $multiple ? $selection->get_result()->fetch_all(MYSQLI_ASSOC) : $selection->get_result()->fetch_assoc();
+    $selection->close();
+    return $result;
+}
+
+function getDataLikeIdentifier($connection, $table, $identifierName, $identifierValue, $fields = ['*'], $limit = 0)
+{
+    $sql = "SELECT " . implode(', ', $fields) . " FROM $table WHERE $identifierName LIKE ?";
+    if ($limit !== 0)
+        $sql .= " LIMIT $limit";
+
+    $identifierValue = '%' . $identifierValue . '%';
+    $selection = $connection->prepare($sql);
+    $selection->bind_param('s', $identifierValue);
+    $selection->execute();
+    $result = $selection->get_result()->fetch_all(MYSQLI_ASSOC);
+    $selection->close();
+    return $result;
+}
+
+function checkIfFollowed($connection, $account, $followed)
+{
+    $check = $connection->prepare("SELECT * FROM follow WHERE account=? AND followed=?");
+    $check->bind_param('ss', $account, $followed);
+    $check->execute();
+    $result = $check->get_result();
+    $check->close();
+    if (mysqli_num_rows($result) != 0)
+        return true;
+    return false;
+}
+
+function unfollow($connection, $account, $followed)
+{
+    $delete = $connection->prepare("DELETE FROM follow where account=? AND followed=?");
+    $delete->bind_param('ss', $account, $followed);
+    $delete->execute();
+    $delete->close();
+}
+
+function increaseUserFollow($connection, $username, $field)
+{
+    $update = $connection->prepare("UPDATE users SET $field = $field + 1 WHERE username=?");
+    $update->bind_param('s', $username);
+    $update->execute();
+    $update->close();
+}
+
+function decreaseUserFollow($connection, $username, $field)
+{
+    $update = $connection->prepare("UPDATE users SET $field = $field - 1 WHERE username=?");
+    $update->bind_param('s', $username);
+    $update->execute();
+    $update->close();
+}
+
+function getPosts($connection, $usernames, $limit = 10)
+{
+    $usernames = array_map('addQuotes', $usernames);
+    $selection = $connection->prepare("SELECT * FROM posts WHERE username IN (" . implode(', ', $usernames) . ") ORDER BY datetime DESC LIMIT $limit");
+    $selection->execute();
+    $result = $selection->get_result()->fetch_all(MYSQLI_ASSOC);
+    $selection->close();
+    return $result;
+}
+
+function addQuotes($element)
+{
+    return "'" . $element . "'";
+}

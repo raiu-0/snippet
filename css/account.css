@@ -1,0 +1,86 @@
+.profile-frame {
+    width: 100%;
+    background-color: var(--clr-bg-lighter);
+    padding: 2rem 1rem 1rem 1rem;
+    border-radius: 0 0 10px 10px;
+}
+
+.content-panel {
+    padding-top: 0;
+}
+
+.main-info {
+    min-width: 0;
+    margin-top: 1rem;
+    flex-grow: 1;
+}
+
+.main-info>div {
+    width: 100%;
+}
+
+.profile-picture-frame {
+    flex-shrink: 0;
+    width: 7.5rem;
+    height: 7.5rem;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: var(--clr-bg);
+    margin-right: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#profile-picture {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+#name {
+    width: 100%;
+    text-wrap: wrap;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--clr-primary);
+}
+
+#username, #birthday {
+    color: var(--clr-placeholder);
+}
+
+#birthday {
+    gap: 0.3rem;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+#birthday>img{
+    width: 1rem;
+    height: 1rem;
+    filter: brightness(0.7);
+}
+
+.stats {
+    gap: 6rem;
+}
+
+#followers, #following {
+    font-size: 0.8rem;
+    color: var(--clr-placeholder);
+}
+
+.interact {
+    width: 20%;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.followed {
+    background-color: var(--clr-primary);
+}
+
+.not-followed {
+    background-color: var(--clr-secondary);
+}

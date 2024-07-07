@@ -84,6 +84,10 @@ function printPOSTVal($key)
         echo $_POST[$key];
 }
 
+function cleanValue($value){
+    return htmlspecialchars(strip_tags(trim($value)));
+}
+
 function validate($fields, &$error, $rawData, $specificiedError = false, &$userData = array()){
     foreach ($fields as $key) {
         if (!isset($rawData[$key]))
@@ -92,7 +96,7 @@ function validate($fields, &$error, $rawData, $specificiedError = false, &$userD
             $error[$key] = 'Input required.';
         else if (strlen($rawData[$key]) > 50)
             $error[$key] = 'Max character limit is 50.';
-        else if ((htmlspecialchars(strip_tags(trim($rawData[$key])))) !== trim($rawData[$key]))
+        else if (cleanValue($rawData[$key]) !== trim($rawData[$key]))
             $error[$key] = "Illegal $key input.";
         else if($specificiedError){
             $userData[$key] = htmlspecialchars(strip_tags(trim($rawData[$key])));

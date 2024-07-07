@@ -25,7 +25,7 @@ if (isset($_POST['sign-up'])) {
             $error['email'] = 'Email already in use.';
 
         if (count($error) === 0)
-            insertInto($con, 'users', $username, $password, $email, $name, $birthday);
+            insertInto($con, 'users', $username, $password, $email, $name, $birthday, null, 0, 0);
 
         endDBConnection($con);
         header('location: index.php');

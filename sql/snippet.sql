@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2024 at 04:45 PM
+-- Generation Time: Jul 07, 2024 at 07:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,13 +24,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `follow`
+--
+
+CREATE TABLE `follow` (
+  `account` varchar(50) NOT NULL,
+  `followed` varchar(50) NOT NULL,
+  `datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `posts`
 --
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `caption` varchar(200) DEFAULT NULL
+  `caption` varchar(200) DEFAULT NULL,
+  `datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -56,31 +69,34 @@ CREATE TABLE `users` (
   `email` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   `birthday` date NOT NULL,
-  `picture` varchar(100) DEFAULT NULL
+  `picture` varchar(100) DEFAULT NULL,
+  `followers` int(11) NOT NULL,
+  `following` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`username`, `password`, `email`, `name`, `birthday`, `picture`) VALUES
-('raiu', '$2y$10$mQrjNEH6ccJO4i2SWcehh.eybcwOMLC9ZrmKP0YMIzQrJk/BBQCfW', 'paraguaraphael0913@gmail.com', 'Raphael', '2004-09-13', NULL);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `follow`
+--
+ALTER TABLE `follow`
+  ADD KEY `account` (`account`),
+  ADD KEY `followed` (`followed`);
+
+--
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `username` (`username`);
 
 --
 -- Indexes for table `post_files`
 --
 ALTER TABLE `post_files`
-  ADD KEY `post_files_ibfk_1` (`post_id`);
+  ADD KEY `post_id` (`post_id`);
 
 --
 -- Indexes for table `users`
@@ -96,17 +112,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `follow`
+--
+ALTER TABLE `follow`
+  ADD CONSTRAINT `follow_ibfk_1` FOREIGN KEY (`account`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `follow_ibfk_2` FOREIGN KEY (`followed`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `post_files`
 --
 ALTER TABLE `post_files`
-  ADD CONSTRAINT `post_files_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `post_files_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post_files_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
