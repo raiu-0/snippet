@@ -28,7 +28,8 @@ if (isset($_POST['sign-up'])) {
             insertInto($con, 'users', $username, $password, $email, $name, $birthday, null, 0, 0);
 
         endDBConnection($con);
-        header('location: index.php');
+        if(count($error) === 0)
+            header('location: index.php');
     }
 }
 ?>

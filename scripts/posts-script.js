@@ -28,12 +28,16 @@ const getPosts = async () => {
     let postData = '';
     data.forEach(e => {
         postFiles = '';
-        e.postFiles.forEach(file=>{
-            if(videoFormats.includes(file.split('.').pop()))
-                postFiles += `<video src="uploads/${file}" controls></video>`;
-            else
-                postFiles += `<img src="uploads/${file}">`
-        });
+        if(e.postFiles.length !== 0){
+            postFiles += '<div class="post-window flex-row">';
+            e.postFiles.forEach(file=>{
+                if(videoFormats.includes(file.split('.').pop()))
+                    postFiles += `<video src="uploads/${file}" controls></video>`;
+                else
+                    postFiles += `<img src="uploads/${file}">`
+            });
+            postFiles += '</div>';
+        }
         postData += `
         <div class="post-box flex-row">
             <div class="post-pfp">
@@ -45,9 +49,9 @@ const getPosts = async () => {
                     <div class="post-time">${e.datetime}</div>
                 </div>
                 <div class="post-caption">${e.caption}</div>
-                <div class="post-window flex-row">
+                
                     ${postFiles}
-                </div>
+                
             </div>
         </div>
         `;
