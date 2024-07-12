@@ -1,7 +1,7 @@
-This project is a mock social media app serving as our finals project in university.
+This project is a mock social media app serving as our finals project in PHP.
 
-css Folder - where CSS files will be stored
+To start this project, make a database named snippet and run the sql file found in the sql folder.
 
-scripts Folder - where JS scripts will be stored
+NOTE: Files uploaded will be stored in your device. All uploads will be found in the uploads folder.
 
-images Folder - where all images will be stored
+Do NOT remove the "defaultPFP.png" when clearing out the uploads folder.

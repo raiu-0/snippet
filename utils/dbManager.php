@@ -127,3 +127,31 @@ function addQuotes($element)
 {
     return "'" . $element . "'";
 }
+
+function updateProfile($connection, $username, $newData)
+{
+    foreach ($newData as $key => $value) {
+        if ($key === 'username' || ($key === 'password' && strlen($value) === 0))
+            continue;
+        $update = $connection->prepare("UPDATE users SET $key = ? WHERE username = ?");
+        $update->bind_param('ss', $value, $username);
+        $update->execute();
+        $update->close();
+    }
+    if($username !== $newData['username']){
+        $update = $connection->prepare("UPDATE users SET username = ? WHERE username = ?");
+        $update->bind_param('ss', $newData['username'], $username);
+        $update->execute();
+        $update->close();
+    }
+}
+
+function getComments($connection, $post_id, $limit = 5)
+{
+    $selection = $connection->prepare("SELECT * FROM comments WHERE post_id = ? ORDER BY datetime DESC LIMIT $limit");
+    $selection->bind_param('i', $post_id);
+    $selection->execute();
+    $result = $selection->get_result()->fetch_all(MYSQLI_ASSOC);
+    $selection->close();
+    return $result;
+}

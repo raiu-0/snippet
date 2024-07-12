@@ -88,21 +88,23 @@ function cleanValue($value){
     return htmlspecialchars(strip_tags(trim($value)));
 }
 
-function validate($fields, &$error, $rawData, $specificiedError = false, &$userData = array()){
+function validate($fields, &$error, $rawData, $specificiedError = false, &$userData = array(), $exception = []){
     foreach ($fields as $key) {
         if (!isset($rawData[$key]))
             $error[$key] = 'Missing form parameter.';
-        else if (empty(trim($rawData[$key])))
+        else if (empty(trim($rawData[$key])) && !in_array($key, $exception))
             $error[$key] = 'Input required.';
         else if (strlen($rawData[$key]) > 50)
             $error[$key] = 'Max character limit is 50.';
         else if (cleanValue($rawData[$key]) !== trim($rawData[$key]))
             $error[$key] = "Illegal $key input.";
         else if($specificiedError){
-            $userData[$key] = htmlspecialchars(strip_tags(trim($rawData[$key])));
-            $validity = validateData($userData[$key], $key);
-            if (!$validity['state'])
-                $error[$key] = $validity['msg'];
+            $userData[$key] = cleanValue($rawData[$key]);
+            if(!in_array($key, $exception) ){
+                $validity = validateData($userData[$key], $key);
+                if (!$validity['state'])
+                    $error[$key] = $validity['msg'];
+            }
         }
     }
 }

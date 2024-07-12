@@ -5,7 +5,7 @@
 require 'utils/validateManager.php';
 
 session_start();
-if(isset($_SESSION['user'], $_SESSION['name']))
+if(isset($_SESSION['user'], $_SESSION['name'], $_SESSION['picture']))
     header('location: home.php');
 
 $fields = ['identifier', 'password'];
@@ -15,9 +15,9 @@ if (isset($_POST['login'])) {
     if (count($error) === 0) {
         require 'utils/dbManager.php';
         $con = startDBConnection();
-        $identifier = htmlspecialchars(strip_tags(trim($_POST['identifier'])));
-        $password = htmlspecialchars(strip_tags(trim($_POST['password'])));
-        $getPass = $con->prepare("SELECT username, password, name FROM users WHERE username = ? OR email = ?");
+        $identifier = cleanValue($_POST['identifier']);
+        $password = cleanValue($_POST['password']);
+        $getPass = $con->prepare("SELECT username, password, name, picture FROM users WHERE username = ? OR email = ?");
         $getPass->bind_param('ss', $identifier, $identifier);
         $getPass->execute();
         $result = $getPass->get_result();
@@ -27,6 +27,7 @@ if (isset($_POST['login'])) {
             if (password_verify($password, $result['password'])) { 
                 $_SESSION['user'] = $result['username'];
                 $_SESSION['name'] = $result['name'];
+                $_SESSION['picture'] = $result['picture'];
                 header('location: home.php');
             } else
                 $error['password'] = 'Wrong password.';

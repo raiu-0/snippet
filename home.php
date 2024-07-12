@@ -3,26 +3,14 @@
 
 <?php
 require 'utils/fileManager.php';
+require 'utils/validateManager.php';
 session_start();
 date_default_timezone_set('Asia/Hong_Kong');
 
 if (isset($_POST['publish'])) {
-    $postFiles = [];
-    foreach ($_FILES['post-media']['name'] as $index => $fileName) {
-        if (in_array(getFileExtension($fileName), $acceptedFormats)) {
-            $uploadName = $fileName;
-            if (file_exists('uploads/' . $fileName)) {
-                $i = 0;
-                while (file_exists('uploads' . $fileName))
-                    $i++;
-                $uploadName = appendToFilename($uploadName, $i);
-            }
-            move_uploaded_file($_FILES['post-media']['tmp_name'][$index], 'uploads/' . $uploadName);
-            $postFiles[] = $uploadName;
-        }
-    }
+    $postFiles = uploadFiles($_FILES['post-media']);
 
-    $caption = htmlspecialchars(strip_tags(trim($_POST['post-caption'])));
+    $caption = cleanValue($_POST['post-caption']);
     if (count($postFiles) > 0 || !empty($caption)) {
         require 'utils/dbManager.php';
         $con = startDBConnection();
@@ -60,7 +48,7 @@ if (isset($_POST['publish'])) {
             onsubmit="clearFileInput(); return false;">
             <div id="create-post-frame" class="card flex-col">
                 <div class="caption-frame flex-row">
-                    <img src="images/icons/default-profile-icon.png" alt="" class="profile-icon">
+                    <img src="uploads/<?php echo $_SESSION['picture'] ?>" alt="" class="profile-icon">
                     <input type="text" id="post-caption" name="post-caption" placeholder="Enter a post.">
                 </div>
                 <div class="file-frame flex-row">
@@ -89,5 +77,5 @@ if (isset($_POST['publish'])) {
 
 <script src="scripts/preview-script.js"></script>
 <script src="scripts/posts-script.js"></script>
-
+<script>getPosts();</script>
 </html>

@@ -3,6 +3,7 @@
     background-color: var(--clr-bg-lighter);
     padding: 2rem 1rem 1rem 1rem;
     border-radius: 0 0 10px 10px;
+    margin-bottom: 1rem;
 }
 
 .content-panel {

@@ -1,0 +1,53 @@
+#account-edit {
+    padding-top: 2rem;
+}
+
+#edit-card {
+    background-color: var(--clr-bg-lighter);
+    padding: 2rem;
+    border-radius: 20px;
+    gap: 1rem;
+}
+
+#profile-icon {
+    flex-shrink: 0;
+    flex-grow: 0;
+    border-radius: 50%;
+    position: relative;
+    object-fit: cover;
+    border: 2px solid var(--clr-neutral);
+    width: 4rem;
+    height: 4rem;
+    overflow: hidden;
+}
+
+#profile-icon img{
+    width: 100%;
+}
+
+#change-details-frame {
+    flex-grow: 1;
+    padding-top: 0.5rem;
+}
+
+#profile-picture {
+    opacity: 0;
+}
+
+#save-changes-button {
+    margin-top: 2rem;
+    background-color: var(--clr-primary);
+    align-self: center;
+    width: fit-content;
+    transition: background-color 0.2s;
+}
+
+#save-changes-button:hover {
+    background-color: var(--clr-primary-lighter);
+}
+
+#change-details-frame label {
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+}

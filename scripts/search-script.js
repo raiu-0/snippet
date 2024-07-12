@@ -22,7 +22,7 @@ window.onload = () => {
                 data.forEach(element => {
                     inner += `
                 <div class="result-box flex-row">
-                    <img src="images/icons/default-profile-icon.png" class="search-result-profile">
+                    <img src="uploads/${element.picture}" class="search-result-profile">
                         <div class="flex-col">
                             <div class="search-result-name">${element.name}</div>
                             <div class="search-result-username">@${element.username}</div>

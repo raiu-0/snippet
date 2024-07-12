@@ -10,7 +10,7 @@ if (count($_GET) !== 1) {
 require 'utils/dbManager.php';
 $con = startDBConnection();
 $userData = getDataByIdentifier($con, 'users', 'username', $_GET['user']);
-if(is_null($userData))
+if (is_null($userData))
     exit('Invalid username.');
 ?>
 
@@ -31,7 +31,7 @@ if(is_null($userData))
     <div class="content-panel">
         <div class="profile-frame flex-row">
             <div class="profile-picture-frame flex-col">
-                <img src="images/icons/account-icon.png" alt="" id="profile-picture">
+                <img src="uploads/<?php echo $userData['picture'] ?>" alt="" id="profile-picture">
             </div>
             <div class="main-info flex-col">
                 <div id="name"><?php echo $userData['name']; ?></div>
@@ -47,8 +47,8 @@ if(is_null($userData))
             </div>
             <div class="interact flex-col">
                 <?php if ($userData['username'] === $_SESSION['user']): ?>
-                    <button id="interact">Edit Profile</button>
-                <?php else: 
+                    <a href="editProfile.php"><button id="interact">Edit Profile</button></a>
+                <?php else:
                     $followedState = checkIfFollowed($con, $_SESSION['user'], $userData['username']);
                     ?>
                     <button id="interact" class="<?php echo $followedState ? 'followed' : 'not-followed'; ?>">
@@ -58,12 +58,12 @@ if(is_null($userData))
                 <?php endif; ?>
             </div>
         </div>
-        <div class="profile-contents">
-
+        <div id="post-area" class="post-area flex-col">
         </div>
     </div>
     <?php require 'utils/searchPanel.php' ?>
 </body>
 <?php endDBConnection($con); ?>
-
+<script src="scripts/posts-script.js"></script>
+<script>getPosts(<?php $userData['username'] ?>);</script>
 </html>
