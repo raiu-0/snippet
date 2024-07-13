@@ -49,7 +49,7 @@ if (isset($_POST['publish'])) {
             <div id="create-post-frame" class="card flex-col">
                 <div class="caption-frame flex-row">
                     <img src="uploads/<?php echo $_SESSION['picture'] ?>" alt="" class="profile-icon">
-                    <input type="text" id="post-caption" name="post-caption" placeholder="Enter a post.">
+                    <input type="text" id="post-caption" name="post-caption" placeholder="Enter a caption." autocomplete="off">
                 </div>
                 <div class="file-frame flex-row">
                     <img src="images/icons/image-icon.png" class="icon" alt="">
