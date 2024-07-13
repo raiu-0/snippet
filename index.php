@@ -22,9 +22,15 @@ if (isset($_POST['login'])) {
         $getPass->execute();
         $result = $getPass->get_result();
         $getPass->close();
+        endDBConnection($con);
         if (mysqli_num_rows($result) !== 0) {
             $result = $result->fetch_assoc();
             if (password_verify($password, $result['password'])) { 
+                if(password_needs_rehash($result['password'], PASSWORD_DEFAULT)){
+                    $con = startDBConnection();
+                    updateProfile($con, $result['username'], ['password' => password_hash($password, PASSWORD_DEFAULT)]);
+                    endDBConnection($con);
+                }
                 $_SESSION['user'] = $result['username'];
                 $_SESSION['name'] = $result['name'];
                 $_SESSION['picture'] = $result['picture'];
