@@ -22,7 +22,8 @@ if (isset($_POST['save'])) {
     else
         validate($fields, $error, $_POST, true, $userData);
     if (count($error) === 0) {
-        $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+        if (strlen($userData['password']) > 0)
+            $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
 
         if ($userData['username'] !== $_SESSION['user'] && rowExists($con, 'users', 'username', $userData['username']))
             $error['username'] = 'Username already taken.';
@@ -30,8 +31,10 @@ if (isset($_POST['save'])) {
         if ($initialData['email'] !== $userData['email'] && rowExists($con, 'users', 'email', $userData['email']))
             $error['email'] = 'Email already in use.';
 
-        if (count($uploadedFile) === 1)
+        if (count($uploadedFile) === 1) {
             $userData['picture'] = $uploadedFile[0];
+            removeFile($initialData['picture']);
+        }
         if (count($error) === 0) {
             updateProfile($con, $_SESSION['user'], $userData);
             $_SESSION['user'] = $userData['username'];
