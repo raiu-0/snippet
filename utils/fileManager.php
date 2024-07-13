@@ -86,3 +86,8 @@ function uploadFiles($fileArray, $formats = acceptedMediaFormats){
     }
     return $postFiles;
 }
+
+function removeFile($filename){
+    if(file_exists("uploads/$filename"))
+        unlink("uploads/$filename");
+}
