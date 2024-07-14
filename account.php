@@ -10,7 +10,8 @@ if (count($_GET) !== 1) {
 require 'utils/dbManager.php';
 $con = startDBConnection();
 $userData = getDataByIdentifier($con, 'users', 'username', $_GET['user']);
-if (is_null($userData))
+date_default_timezone_set('Asia/Hong_Kong');
+if (is_null($userData) || count($userData) === 0)
     exit('Invalid username.');
 ?>
 
@@ -65,5 +66,5 @@ if (is_null($userData))
 </body>
 <?php endDBConnection($con); ?>
 <script src="scripts/posts-script.js"></script>
-<script>getPosts(<?php $userData['username'] ?>);</script>
+<script>getPosts(<?php echo '"'.$_SESSION['user'].'"'?>, <?php echo '"'.$userData['username'].'"' ?>);</script>
 </html>

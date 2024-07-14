@@ -77,6 +77,26 @@ function getDataLikeIdentifier($connection, $table, $identifierName, $identifier
     return $result;
 }
 
+function deleteByIdentifier($connection, $table, $identifierName, $identifierValue){
+    $delete = $connection->prepare("DELETE FROM $table WHERE $identifierName = ?");
+    $type = '';
+    switch (gettype($identifierValue)) {
+        case 'integer':
+            $type = 'i';
+            break;
+        case 'double':
+        case 'float':
+            $type = 'd';
+            break;
+        default:
+            $type = 's';
+            break;
+    }
+    $delete->bind_param($type, $identifierValue);
+    $delete->execute();
+    $delete->close();
+}
+
 function checkIfFollowed($connection, $account, $followed)
 {
     $check = $connection->prepare("SELECT * FROM follow WHERE account=? AND followed=?");
@@ -116,9 +136,21 @@ function decreaseUserFollow($connection, $username, $field)
 function getPosts($connection, $usernames, $limit = 10)
 {
     $usernames = array_map('addQuotes', $usernames);
-    $selection = $connection->prepare("SELECT * FROM posts WHERE username IN (" . implode(', ', $usernames) . ") ORDER BY datetime DESC LIMIT $limit");
+    $sql = "SELECT * FROM posts WHERE username IN (" . implode(', ', $usernames) . ") ORDER BY datetime DESC";
+    if($limit > 0)
+        $sql .= " LIMIT $limit";
+    $selection = $connection->prepare($sql);
     $selection->execute();
     $result = $selection->get_result()->fetch_all(MYSQLI_ASSOC);
+    $selection->close();
+    return $result;
+}
+
+function getPostByID($connection, $id){
+    $selection = $connection->prepare("SELECT * FROM posts WHERE id = ?");
+    $selection->bind_param('i', $id);
+    $selection->execute();
+    $result = $selection->get_result()->fetch_assoc();
     $selection->close();
     return $result;
 }
@@ -153,5 +185,107 @@ function getComments($connection, $post_id, $limit = 5)
     $selection->execute();
     $result = $selection->get_result()->fetch_all(MYSQLI_ASSOC);
     $selection->close();
+    return $result;
+}
+
+function checkIfLiked($connection, $post_id, $username)
+{
+    $check = $connection->prepare("SELECT * FROM likes WHERE post_id = ? AND username = ?");
+    $check->bind_param('is', $post_id, $username);
+    $check->execute();
+    $result = $check->get_result();
+    $check->close();
+    if (mysqli_num_rows($result) != 0)
+        return true;
+    return false;
+}
+
+function likePost($connection, $post_id, $username, $datetime)
+{
+    $insertion = $connection->prepare("INSERT INTO likes VALUES (?, ?, ?)");
+    $insertion->bind_param('iss', $post_id, $username, $datetime);
+    $insertion->execute();
+    $insertion->close();
+
+    $update = $connection->prepare("UPDATE posts SET like_count = like_count + 1 WHERE id = ?");
+    $update->bind_param('i', $post_id);
+    $update->execute();
+    $update->close();
+}
+
+function unlikePost($connection, $post_id, $username)
+{
+    $deletion = $connection->prepare("DELETE FROM likes WHERE post_id = ? AND username = ?");
+    $deletion->bind_param('is', $post_id, $username);
+    $deletion->execute();
+    $deletion->close();
+    
+    $update = $connection->prepare("UPDATE posts SET like_count = like_count - 1 WHERE id = ?");
+    $update->bind_param('i', $post_id);
+    $update->execute();
+    $update->close();
+}
+
+function getInteractions($connection, $username){
+    $sql = "SELECT
+    'Comment' AS type,
+    post_id AS post_id,
+    username AS username,
+    DATETIME AS datetime,
+    COMMENT AS content
+FROM
+    comments
+WHERE
+    post_id IN(
+    SELECT
+        id
+    FROM
+        posts
+    WHERE
+        username = ?
+) AND username != ?
+UNION
+SELECT
+    'Like' AS type,
+    post_id AS post_id,
+    username AS username,
+    DATETIME AS datetime,
+    NULL AS CONTENT
+FROM
+    likes
+WHERE
+    post_id IN(
+    SELECT
+        id
+    FROM
+        posts
+    WHERE
+        username = ?
+) AND username != ?
+UNION
+SELECT
+    'Follow' AS type,
+    NULL AS post_id,
+    ACCOUNT AS username,
+    DATETIME AS datetime,
+    NULL AS content
+FROM
+    follow
+WHERE
+    followed = ?
+ORDER BY DATETIME
+DESC";
+    $select = $connection->prepare($sql);
+    $select->bind_param('sssss', $username, $username, $username, $username, $username);
+    $select->execute();
+    $result = $select->get_result()->fetch_all(MYSQLI_ASSOC);
+    $select->close();
+
+    foreach($result as &$row){
+        $interactionInfo = getDataByIdentifier($connection, 'users', 'username', $row['username']);
+        $row['name'] = $interactionInfo['name'];
+        $row['picture'] = $interactionInfo['picture'];
+    }
+
     return $result;
 }

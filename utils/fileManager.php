@@ -44,10 +44,11 @@ const acceptedVideoFormats = [
     'mpg',
     'ts'
 ];
+
+const FILEMAXSIZE = 50 * 1024 * 1024;
 function getFileExtension($name)
 {
-    $n = strrpos($name, '.');
-    return ($n === false) ? '' : substr($name, $n + 1);
+    return strtolower(pathinfo($name, PATHINFO_EXTENSION));
 }
 function appendToFilename($name, $toAppend)
 {
@@ -60,6 +61,8 @@ function uploadFiles($fileArray, $formats = acceptedMediaFormats){
     $postFiles = [];
     if (is_array($fileArray['name'])) {
         foreach ($fileArray['name'] as $index => $fileName) {
+            if($fileArray['size'][$index] > FILEMAXSIZE || strlen($fileName) > 255)
+                continue;
             if (in_array(getFileExtension($fileName), $formats)) {
                 if (file_exists("uploads/$fileName")) {
                     $i = 0;
@@ -73,6 +76,8 @@ function uploadFiles($fileArray, $formats = acceptedMediaFormats){
         }
     } else {
         $fileName = $fileArray['name'];
+        if($fileArray['size'] > FILEMAXSIZE || strlen($fileName) > 255)
+            return;
         if (in_array(getFileExtension($fileName), $formats)) {
             if (file_exists("uploads/$fileName")) {
                 $i = 0;

@@ -1,0 +1,12 @@
+.post-window {
+    padding: 0;
+    padding-bottom: 0.3rem;
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+}
+
+.post-window img,
+.post-window video{
+    width: 100% !important;
+    height: auto !important;
+}

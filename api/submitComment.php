@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Hong_Kong');
 
 $post_input = file_get_contents('php://input');
 $data = json_decode($post_input, true);

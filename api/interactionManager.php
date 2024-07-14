@@ -2,7 +2,6 @@
 session_start();
 require '../utils/dbManager.php';
 require '../utils/validateManager.php';
-
 date_default_timezone_set('Asia/Hong_Kong');
 
 $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';

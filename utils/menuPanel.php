@@ -14,9 +14,9 @@
         <a href="home.php"><span class="button-link"></span></a>
     </div>
     <div class="menu-option flex-row">
-        <img src="images/icons/notifications-icon.png" alt="" class="icon-with-label">
-        Notifications
-        <a href="home.php"><span class="button-link"></span></a>
+        <img src="images/icons/interaction-icon.png" alt="" class="icon-with-label">
+        Interactions
+        <a href="interactions.php"><span class="button-link"></span></a>
     </div>
     <div class="menu-option flex-row">
         <img src="images/icons/settings-icon.png" alt="" class="icon-with-label">

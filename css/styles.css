@@ -346,9 +346,11 @@ h3.title {
     min-width: 0;
     border-radius: 20px 20px 0 0;
     gap: 0.5rem;
+    padding-bottom: 0.75rem;
 }
 
 .post-pfp {
+    position: relative;
     width: 3rem;
     height: 3rem;
     margin: 1.5rem 0 0 1.5rem;
@@ -369,13 +371,23 @@ h3.title {
 }
 
 .post-author {
-    font-weight: bold;
-    font-size: 1.1rem;
+    position: relative;
+    align-items: end;
+    gap: 0.3rem;
 }
 
-.post-author a {
+.post-prof-name {
+    font-weight: bold;
+    font-size: 1.1rem;
     color: var(--clr-primary) !important;
     text-decoration: none !important;
+}
+
+.post-prof-username {
+    color: var(--clr-placeholder) !important;
+    font-size: 0.8rem;
+    text-decoration: none !important;
+    padding-bottom: 0.175rem;
 }
 
 .post-time {
@@ -408,7 +420,7 @@ h3.title {
     background-color: var(--clr-bg-lighter);
     justify-content: end;
     align-items: center;
-    padding: 0 0.7rem 0.7rem 0.7rem;
+    padding: 1rem 0.7rem 0.7rem 0.7rem;
     border-radius: 0 0 20px 20px;
 }
 
@@ -424,11 +436,17 @@ h3.title {
 
 .comment-box>button {
     background-color: var(--clr-bg-lighter);
-    border-radius: 0 5px 5px 0;
+    border: solid var(--clr-bg-lightest);
+    border-width: 1px 1px 1px 0;
+    border-radius: 0 50% 50% 0;
 }
 
 .comment-box>button>img {
     height: 100%;
+}
+
+.comment-picture {
+    position: relative;
 }
 
 .comment-pfp {
@@ -444,15 +462,15 @@ h3.title {
     transition: height 1s;
 }
 
-.post-comments-box {
+.post-interactions-box {
     width: 100%;
     background-color: var(--clr-bg-lighter);
-    padding: 1rem;
+    padding: 0 1rem;
 }
 
 .show-comments,
 .hide-comments {
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 0.3rem;
     background-color: var(--clr-bg-lighter);
     font-size: 0.8rem;
@@ -502,4 +520,63 @@ h3.title {
 .no-comments img {
     margin-left: 1rem;
     height: 2rem;
+}
+
+.post-header {
+    padding-right: 1.5rem;
+}
+
+.post-frame {
+    position: relative;
+    z-index: 0;
+}
+
+.post-frame>*{
+    z-index: 1;
+}
+
+.post-controls-frame {
+    flex-grow: 1;
+    justify-content: end;
+    height: 2rem;
+    background-color: var(--clr-bg-lighter) !important;
+    gap: 0.3rem;
+}
+
+.post-controls-frame:hover {
+    filter: none !important;
+}
+
+.post-controls-frame button {
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    font-size: 0.8rem;
+}
+
+.post-controls-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: 0.3s ease-in-out;
+}
+
+.post-controls-frame img:hover {
+    filter: brightness(0.9);
+}
+
+.like-post {
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    width: 2.25rem;
+    background-color: var(--clr-bg-lighter);
+}
+
+.like-post img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin-right: 0.2rem;
 }

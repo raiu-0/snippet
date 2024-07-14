@@ -15,9 +15,9 @@ if (isset($_POST['publish'])) {
         require 'utils/dbManager.php';
         $con = startDBConnection();
         if (strlen($caption) === 0)
-            insertInto($con, 'posts', null, $_SESSION['user'], null, date('Y-m-d H:i:s'));
+            insertInto($con, 'posts', null, $_SESSION['user'], null, date('Y-m-d H:i:s'), 0);
         else
-            insertInto($con, 'posts', null, $_SESSION['user'], $caption, date('Y-m-d H:i:s'));
+            insertInto($con, 'posts', null, $_SESSION['user'], $caption, date('Y-m-d H:i:s'), 0);
         $postID = mysqli_insert_id($con);
 
         foreach ($postFiles as $files)
@@ -77,5 +77,5 @@ if (isset($_POST['publish'])) {
 
 <script src="scripts/preview-script.js"></script>
 <script src="scripts/posts-script.js"></script>
-<script>getPosts();</script>
+<script>getPosts(<?php echo '"'.$_SESSION['user'].'"'?>);</script>
 </html>
