@@ -19,11 +19,6 @@
         <a href="interactions.php"><span class="button-link"></span></a>
     </div>
     <div class="menu-option flex-row">
-        <img src="images/icons/settings-icon.png" alt="" class="icon-with-label">
-        Settings
-        <a href="home.php"><span class="button-link"></span></a>
-    </div>
-    <div class="menu-option flex-row">
         <img src="images/icons/account-icon.png" alt="" class="icon-with-label">
         Account
         <a href="editProfile.php"><span class="button-link"></span></a>

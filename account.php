@@ -43,7 +43,7 @@ if (is_null($userData) || count($userData) === 0)
                 </div>
                 <div class="stats flex-row">
                     <div id="followers">Followers: <?php echo $userData['followers']; ?></div>
-                    <div id="following">Following: <?php echo $userData['following']; ?></div>
+                    <div id="following" onclick="followingCountClick(<?php echo $_SESSION['user'] === $userData['username']; ?>)">Following: <?php echo $userData['following']; ?></div>
                 </div>
             </div>
             <div class="interact flex-col">
@@ -52,10 +52,10 @@ if (is_null($userData) || count($userData) === 0)
                 <?php else:
                     $followedState = checkIfFollowed($con, $_SESSION['user'], $userData['username']);
                     ?>
-                    <button id="interact" class="<?php echo $followedState ? 'followed' : 'not-followed'; ?>">
-                        <?php echo $followedState ? 'Followed' : 'Follow'; ?>
+                    <button id="interact" class="<?php echo $followedState ? 'followed' : 'not-followed'; ?>"
+                        onmouseover="followHover(this)" onmouseleave="followNoHover(this)">
+                        <?php echo $followedState ? 'Followed' : (checkIfFollowed($con, $userData['username'], $_SESSION['user']) ? 'Follow back' : 'Follow'); ?>
                     </button>
-                    <script src="scripts/interact-script.js"></script>
                 <?php endif; ?>
             </div>
         </div>
@@ -65,6 +65,7 @@ if (is_null($userData) || count($userData) === 0)
     <?php require 'utils/searchPanel.php' ?>
 </body>
 <?php endDBConnection($con); ?>
+<script src="scripts/interact-script.js"></script>
 <script src="scripts/posts-script.js"></script>
-<script>getPosts(<?php echo '"'.$_SESSION['user'].'"'?>, <?php echo '"'.$userData['username'].'"' ?>);</script>
+<script>getPosts(<?php echo '"' . $_SESSION['user'] . '"' ?>, <?php echo '"' . $userData['username'] . '"' ?>);</script>
 </html>

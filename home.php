@@ -7,25 +7,6 @@ require 'utils/validateManager.php';
 session_start();
 date_default_timezone_set('Asia/Hong_Kong');
 
-if (isset($_POST['publish'])) {
-    $postFiles = uploadFiles($_FILES['post-media']);
-
-    $caption = cleanValue($_POST['post-caption']);
-    if (count($postFiles) > 0 || !empty($caption)) {
-        require 'utils/dbManager.php';
-        $con = startDBConnection();
-        if (strlen($caption) === 0)
-            insertInto($con, 'posts', null, $_SESSION['user'], null, date('Y-m-d H:i:s'), 0);
-        else
-            insertInto($con, 'posts', null, $_SESSION['user'], $caption, date('Y-m-d H:i:s'), 0);
-        $postID = mysqli_insert_id($con);
-
-        foreach ($postFiles as $files)
-            insertInto($con, 'post_files', $postID, $files);
-        endDBConnection($con);
-    }
-    header('location: home.php');
-}
 ?>
 
 <head>
@@ -44,8 +25,7 @@ if (isset($_POST['publish'])) {
     <?php require 'utils/menuPanel.php'; ?>
 
     <div class="content-panel flex-col">
-        <form id="post-frame" class="flex-row" method="post" enctype="multipart/form-data"
-            onsubmit="clearFileInput(); return false;">
+        <form id="post-frame" class="flex-row" method="post" enctype="multipart/form-data">
             <div id="create-post-frame" class="card flex-col">
                 <div class="caption-frame flex-row">
                     <img src="uploads/<?php echo $_SESSION['picture'] ?>" alt="" class="profile-icon">
@@ -78,4 +58,28 @@ if (isset($_POST['publish'])) {
 <script src="scripts/preview-script.js"></script>
 <script src="scripts/posts-script.js"></script>
 <script>getPosts(<?php echo '"'.$_SESSION['user'].'"'?>);</script>
+<script>
+    document.getElementById('post-frame').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    var formData = new FormData(document.getElementById('post-frame'));
+
+    const request = new Request('api/submitPost.php', {
+        method: 'POST',
+        body: formData
+    });
+
+    const response = await fetch(request);
+    const text = await response.text();
+    console.log(text);
+    const data = JSON.parse(text);
+    alert(data.msg);
+    mediaPreview.innerHTML = '';
+    mediaPreview.classList.remove('has-content');
+    mediaInput.files = (new DataTransfer()).files;
+    document.getElementById('post-caption').value = '';
+    document.getElementById('post-area').innerHTML = '';
+    getPosts(<?php echo '"'.$_SESSION['user'].'"'?>);
+});
+</script>
 </html>

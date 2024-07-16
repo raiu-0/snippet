@@ -9,6 +9,7 @@
     --clr-primary-lighter: #ff55a1;
     --clr-secondary: #9a16ae;
     --clr-placeholder: #afb2b7;
+    --clr-popup-bg: #00000077;
 }
 
 *,
@@ -466,6 +467,7 @@ h3.title {
     width: 100%;
     background-color: var(--clr-bg-lighter);
     padding: 0 1rem;
+    padding-top: 0.5rem;
 }
 
 .show-comments,
@@ -579,4 +581,115 @@ h3.title {
     height: 100%;
     object-fit: contain;
     margin-right: 0.2rem;
+}
+
+.pop-up-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--clr-popup-bg);
+}
+
+.pop-up-body {
+    width: 20rem;
+    background-color: var(--clr-bg-lighter);
+    border-radius: 20px;
+    padding: 1rem;
+}
+
+.pop-up-title {
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#pop-up-title-text {
+    flex-grow: 1;
+}
+
+.pop-up-title button {
+    width: 2rem;
+    height: 2rem;
+}
+
+.pop-up-title img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.pop-up-result-frame {
+    padding: 0.3rem;
+    border-radius: 10px;
+    width: 100%;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.pop-up-result-frame:hover{
+    background-color: var(--clr-bg-lightest);
+}
+
+.pop-up-result-picture {
+    width: 3rem;
+    height: 3rem;
+    overflow: none;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    position: relative;
+}
+
+.pop-up-result-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.pop-up-result-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-right: 0.2rem;
+    position: relative;
+}
+
+.pop-up-result-username {
+    padding-top: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--clr-placeholder);
+    position: relative;
+}
+
+.pop-up-result-frame button {
+    margin-left: auto;
+}
+
+.comment-del-button-frame {
+    justify-content: end;
+    flex-grow: 1;
+}
+
+.comment-del-button-frame button {
+    width: 5rem;
+    height: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.comment-del-button-frame>button>img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.comment-body {
+    transition: background-color 0.3s;
+    align-items: center;
+    padding: 0.3rem;
+    border-radius: 10px;
+}
+
+.comment-body:hover{
+    background-color: var(--clr-bg);
 }

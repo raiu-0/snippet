@@ -2,8 +2,8 @@
 function startDBConnection()
 {
     $host = 'localhost';
-    $user = 'root';
-    $pass = '';
+    $user = 'snippet';
+    $pass = 'snippetUser@0605';
     $dbName = 'snippet';
 
     $con = new mysqli($host, $user, $pass, $dbName);
@@ -77,7 +77,8 @@ function getDataLikeIdentifier($connection, $table, $identifierName, $identifier
     return $result;
 }
 
-function deleteByIdentifier($connection, $table, $identifierName, $identifierValue){
+function deleteByIdentifier($connection, $table, $identifierName, $identifierValue)
+{
     $delete = $connection->prepare("DELETE FROM $table WHERE $identifierName = ?");
     $type = '';
     switch (gettype($identifierValue)) {
@@ -105,6 +106,24 @@ function checkIfFollowed($connection, $account, $followed)
     $result = $check->get_result();
     $check->close();
     if (mysqli_num_rows($result) != 0)
+        return true;
+    return false;
+}
+
+function checkIfFollowBack($connection, $account, $followed){
+    $check1 = $connection->prepare("SELECT * FROM follow WHERE account=? AND followed=?");
+    $check1->bind_param('ss', $account, $followed);
+    $check1->execute();
+    $result1 = $check1->get_result()->fetch_assoc();
+    $check1->close();
+    if(!is_array($result1) || count($result1) === 0)
+        return false;
+    $check2 = $connection->prepare("SELECT * FROM follow WHERE account=? AND followed=?");
+    $check2->bind_param('ss', $followed, $account);
+    $check2->execute();
+    $result2 = $check2->get_result()->fetch_assoc();
+    $check2->close();
+    if(strtotime($result1['datetime']) < strtotime($result2['datetime']))
         return true;
     return false;
 }
@@ -137,7 +156,7 @@ function getPosts($connection, $usernames, $limit = 10)
 {
     $usernames = array_map('addQuotes', $usernames);
     $sql = "SELECT * FROM posts WHERE username IN (" . implode(', ', $usernames) . ") ORDER BY datetime DESC";
-    if($limit > 0)
+    if ($limit > 0)
         $sql .= " LIMIT $limit";
     $selection = $connection->prepare($sql);
     $selection->execute();
@@ -146,7 +165,8 @@ function getPosts($connection, $usernames, $limit = 10)
     return $result;
 }
 
-function getPostByID($connection, $id){
+function getPostByID($connection, $id)
+{
     $selection = $connection->prepare("SELECT * FROM posts WHERE id = ?");
     $selection->bind_param('i', $id);
     $selection->execute();
@@ -170,7 +190,7 @@ function updateProfile($connection, $username, $newData)
         $update->execute();
         $update->close();
     }
-    if($username !== $newData['username']){
+    if ($username !== $newData['username']) {
         $update = $connection->prepare("UPDATE users SET username = ? WHERE username = ?");
         $update->bind_param('ss', $newData['username'], $username);
         $update->execute();
@@ -219,14 +239,15 @@ function unlikePost($connection, $post_id, $username)
     $deletion->bind_param('is', $post_id, $username);
     $deletion->execute();
     $deletion->close();
-    
+
     $update = $connection->prepare("UPDATE posts SET like_count = like_count - 1 WHERE id = ?");
     $update->bind_param('i', $post_id);
     $update->execute();
     $update->close();
 }
 
-function getInteractions($connection, $username){
+function getInteractions($connection, $username)
+{
     $sql = "SELECT
     'Comment' AS type,
     post_id AS post_id,
@@ -281,11 +302,29 @@ DESC";
     $result = $select->get_result()->fetch_all(MYSQLI_ASSOC);
     $select->close();
 
-    foreach($result as &$row){
+    foreach ($result as &$row) {
         $interactionInfo = getDataByIdentifier($connection, 'users', 'username', $row['username']);
         $row['name'] = $interactionInfo['name'];
         $row['picture'] = $interactionInfo['picture'];
     }
 
+    return $result;
+}
+
+function getFollowData($connection, $username, $mode)
+{
+    if ($mode === 'followers') {
+        $first = 'account';
+        $second = 'followed';
+    } else if ($mode === 'following') {
+        $first = 'followed';
+        $second = 'account';
+    } else
+        return [];
+    $select = $connection->prepare("SELECT $first FROM follow WHERE $second = ? ORDER BY datetime DESC");
+    $select->bind_param('s', $username);
+    $select->execute();
+    $result = $select->get_result()->fetch_all(MYSQLI_ASSOC);
+    $select->close();
     return $result;
 }

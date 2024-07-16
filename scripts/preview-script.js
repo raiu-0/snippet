@@ -23,6 +23,7 @@ const acceptedMediaFormats = [
     'ts'
 ];
 
+
 mediaInput.files = (new DataTransfer()).files;
 let filesArray = [];
 
@@ -31,7 +32,7 @@ function removeMedia(button) {
     const fileName = preview.dataset.fileName;
 
     mediaPreview.removeChild(preview);
-
+    
     filesArray = filesArray.filter(file => file.name !== fileName);
 
     const dt = new DataTransfer();

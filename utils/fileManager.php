@@ -57,7 +57,7 @@ function appendToFilename($name, $toAppend)
     return implode('.', $arr);
 }
 
-function uploadFiles($fileArray, $formats = acceptedMediaFormats){
+function uploadFiles($fileArray, $formats = acceptedMediaFormats, $goback=''){
     $postFiles = [];
     if (is_array($fileArray['name'])) {
         foreach ($fileArray['name'] as $index => $fileName) {
@@ -70,7 +70,7 @@ function uploadFiles($fileArray, $formats = acceptedMediaFormats){
                         $i++;
                     $fileName = appendToFilename($fileName, $i);
                 }
-                move_uploaded_file($fileArray['tmp_name'][$index], "uploads/$fileName");
+                move_uploaded_file($fileArray['tmp_name'][$index], $goback."uploads/$fileName");
                 $postFiles[] = $fileName;
             }
         }
@@ -85,7 +85,7 @@ function uploadFiles($fileArray, $formats = acceptedMediaFormats){
                     $i++;
                 $fileName = appendToFilename($fileName, $i);
             }
-            move_uploaded_file($fileArray['tmp_name'], "uploads/$fileName");
+            move_uploaded_file($fileArray['tmp_name'], $goback."uploads/$fileName");
             $postFiles[] = $fileName;
         }
     }

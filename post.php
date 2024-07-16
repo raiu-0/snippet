@@ -61,8 +61,7 @@ endDBConnection($con);
 <script>
     document.getElementById('post-area').innerHTML = constructPost(<?php echo "'" . json_encode($post) . "', '" . $_SESSION['user']."'".', false, false'; ?>);
     showComments(document.getElementsByClassName('show-comments flex-row')[0], <?php echo $post['id'] ?>, 10);
-    document.getElementsByClassName('delete-post-frame')[0].children[0].addEventListener('click', () => {
-        console.log('woo');
+    document.getElementsByClassName('delete-post-btn')[0].addEventListener('click', () => {
         window.location.replace('home.php');
     })
 </script>

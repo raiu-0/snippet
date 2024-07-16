@@ -14,7 +14,7 @@ if (isset($data['id'], $data['content'])) {
     $id = cleanValue($data['id']);
     $comment = cleanValue($data['content']);
 
-    insertInto($con, 'comments', $id, $_SESSION['user'], $comment, date('Y-m-d H:i:s'));
+    insertInto($con, 'comments', null, $id, $_SESSION['user'], $comment, date('Y-m-d H:i:s'));
 
     endDBConnection($con);
     echo 'Success';

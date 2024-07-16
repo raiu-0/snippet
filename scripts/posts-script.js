@@ -69,7 +69,7 @@ const constructPost = (e, viewer, jsonencoded = true, enablehyperlink = true) =>
                         <div class="post-controls-frame flex-row">`;
     if (e.username === viewer)
         postData += `
-            <button class="flex-row" onclick="deletePost(this, ${e.id})">
+            <button class="flex-row delete-post-btn" onclick="deletePost(this, ${e.id})">
                 <img src="images/icons/x-icon.png">
                 Delete
             </button>`;
@@ -83,21 +83,21 @@ const constructPost = (e, viewer, jsonencoded = true, enablehyperlink = true) =>
                 ${postFiles}
                 <div class="post-interactions-box flex-col">
                     <div class="post-comments flex-col"></div>
-                        <div class="flex-row">
-                            <button class="like-post flex-row" onclick="likePost(this, ${e.id})"><img src="images/icons/heart-` + (e.liked ? '' : 'no-') + `fill-icon.png"><div>${e.like_count}</div></button>`;
+                    <div class="flex-row">
+                        <button class="like-post flex-row" onclick="likePost(this, ${e.id})"><img src="images/icons/heart-` + (e.liked ? '' : 'no-') + `fill-icon.png"><div>${e.like_count}</div></button>`;
     if (e.hasComments)
         postData += `
-                    <button class="show-comments flex-row" onclick="showComments(this, ${e.id}, 4)">Show comments<img src="images/icons/arrow-down-icon.png" class="icon"></button>
-                    <button class="hide-comments flex-row hidden" onclick="hideComments(this, ${e.id})">Hide comments<img src="images/icons/arrow-up-icon.png" class="icon"></button>
+                    <button class="show-comments flex-row" onclick="showComments(this, ${e.id}, 4, '${viewer}')">Show comments<img src="images/icons/arrow-down-icon.png" class="icon"></button>
+                    <button class="hide-comments flex-row hidden" onclick="hideComments(this, ${e.id}, '${viewer}')">Hide comments<img src="images/icons/arrow-up-icon.png" class="icon"></button>
                 `;
     postData += `
-        </div>
-            </div>
-            <div class="comment-box flex-row">
-                <img src="uploads/${e.requesterPicture}" class="comment-pfp">
-                <input type="text" class="comment-input" placeholder="Comment">
-                <button type="button" onclick="submitComment(this, ${e.id})"><img src="images/icons/send-icon.png"></button>
-            </div>`;
+                    </div>
+                </div>
+                <div class="comment-box flex-row">
+                    <img src="uploads/${e.requesterPicture}" class="comment-pfp">
+                    <input type="text" class="comment-input" placeholder="Comment">
+                    <button type="button" onclick="submitComment(this, ${e.id}, '${viewer}')"><img src="images/icons/send-icon.png"></button>
+                </div>`;
     postData += `</div>`;
     return postData;
 }
@@ -106,7 +106,7 @@ const toPostPage = (id) => {
     window.location.href = "post.php?id=" + id;
 }
 
-const showComments = async (element, id, limit) => {
+const showComments = async (element, id, limit, viewer) => {
     const request = new Request('api/getComments.php', {
         method: 'POST',
         headers: {
@@ -128,6 +128,12 @@ const showComments = async (element, id, limit) => {
         let e;
         for (let i = 0; i < limit && i < data.length; i++) {
             e = data[i];
+            delButton = '';
+            if(viewer === e.username)
+                delButton = `<button class="flex-row" onclick="deleteComment(this, '${e.comment_id}')">
+                                <img src="images/icons/x-icon.png">
+                                Delete
+                            </button>`;
             comments += `
                 <div class="comment-body flex-row">
                     <div class="comment-picture">
@@ -138,8 +144,12 @@ const showComments = async (element, id, limit) => {
                         <div class="comment-bubble flex-col">
                             <div class="comment-author"><a href="account.php?user=${e.username}">${e.name}</a></div>
                             <div class="comment-text">${e.comment}</div>
+                            
                         </div>
                         <div class="comment-time">${e.datetime}</div>
+                    </div>
+                    <div class="flex-row comment-del-button-frame">
+                        ${delButton}
                     </div>
                 </div>
             `;
@@ -158,15 +168,15 @@ const showComments = async (element, id, limit) => {
     element.nextElementSibling.classList.remove('hidden');
 }
 
-const hideComments = (element, id) => {
+const hideComments = (element, id, viewer) => {
     element.parentNode.previousElementSibling.innerHTML = '';
     element.classList.add('hidden');
     element.previousElementSibling.innerHTML = `Show comments<img src="images/icons/arrow-down-icon.png" class="icon">`;
     element.previousElementSibling.classList.remove('hidden');
-    element.previousElementSibling.setAttribute('onclick', `showComments(this, ${id}, 5)`);
+    element.previousElementSibling.setAttribute('onclick', `showComments(this, ${id}, 5, '${viewer}')`);
 }
 
-const submitComment = async (element, id) => {
+const submitComment = async (element, id, viewer) => {
     const request = new Request('api/submitComment.php', {
         method: 'POST',
         headers: {
@@ -186,11 +196,11 @@ const submitComment = async (element, id) => {
         const interactionPanel = element.parentNode.previousElementSibling.children[1];
         if (interactionPanel.childElementCount < 3) {
             interactionPanel.innerHTML += `
-                <button class="show-comments flex-row hidden" onclick="showComments(this, ${id}, 4)">Show comments<img src="images/icons/arrow-down-icon.png" class="icon"></button>
-                <button class="hide-comments flex-row" onclick="hideComments(this, ${id})">Hide comments<img src="images/icons/arrow-up-icon.png" class="icon"></button>
+                <button class="show-comments flex-row hidden" onclick="showComments(this, ${id}, 4, '${viewer}')">Show comments<img src="images/icons/arrow-down-icon.png" class="icon"></button>
+                <button class="hide-comments flex-row" onclick="hideComments(this, ${id}, '${viewer}')">Hide comments<img src="images/icons/arrow-up-icon.png" class="icon"></button>
             `;
         }
-        showComments(element.parentNode.previousElementSibling.children[1].children[1], id, 4);
+        showComments(element.parentNode.previousElementSibling.children[1].children[1], id, 4, viewer);
         element.previousElementSibling.value = '';
     } else {
         alert('Cannot post comment.');
@@ -231,11 +241,36 @@ const deletePost = async (element, id) => {
 
     const response = await fetch(request);
     const text = await response.text();
-    console.log("AAAAAAAAAAAAA");
-    console.log(text);
+
     if (text === 'Success') {
         let child = element.parentNode.parentNode.parentNode.parentNode.parentNode;
         child.parentNode.removeChild(child);
+    } else
+        alert('Post cannot be removed');
+}
+
+const deleteComment = async (e, id) => {
+    const request = new Request('api/deleteComment.php', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            id: id
+        })
+    });
+
+    const response = await fetch(request);
+    const text = await response.text();
+    if (text === 'Success') {
+        let child = e.parentNode.parentNode;
+        let parent = child.parentNode;
+        parent.removeChild(child);
+        if(parent.childElementCount === 0){
+            let interactioncontrols = parent.nextElementSibling;
+            interactioncontrols.removeChild(interactioncontrols.children[1]);
+            interactioncontrols.removeChild(interactioncontrols.children[1]);
+        }
     } else
         alert('Post cannot be removed');
 }

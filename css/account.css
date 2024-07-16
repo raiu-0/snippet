@@ -67,9 +67,18 @@
     gap: 6rem;
 }
 
-#followers, #following {
+#followers,
+#following {
+    padding: 0.3rem;
     font-size: 0.8rem;
     color: var(--clr-placeholder);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#followers:hover,
+#following:hover {
+    background-color: var(--clr-bg-lightest);
 }
 
 .interact {
@@ -81,6 +90,11 @@
 
 .followed {
     background-color: var(--clr-primary);
+    transition: background-color 0.3s;
+}
+
+.followed:hover {
+    background-color: var(--clr-error);
 }
 
 .not-followed {
