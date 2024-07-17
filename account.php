@@ -25,6 +25,7 @@ if (is_null($userData) || count($userData) === 0)
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icons/snippet-icon.png">
 </head>
 
 <body>
@@ -43,7 +44,9 @@ if (is_null($userData) || count($userData) === 0)
                 </div>
                 <div class="stats flex-row">
                     <div id="followers">Followers: <?php echo $userData['followers']; ?></div>
-                    <div id="following" onclick="followingCountClick(<?php echo $_SESSION['user'] === $userData['username']; ?>)">Following: <?php echo $userData['following']; ?></div>
+                    <div id="following"
+                        onclick="followingCountClick(<?php echo $_SESSION['user'] === $userData['username']; ?>)">
+                        Following: <?php echo $userData['following']; ?></div>
                 </div>
             </div>
             <div class="interact flex-col">
@@ -68,4 +71,5 @@ if (is_null($userData) || count($userData) === 0)
 <script src="scripts/interact-script.js"></script>
 <script src="scripts/posts-script.js"></script>
 <script>getPosts(<?php echo '"' . $_SESSION['user'] . '"' ?>, <?php echo '"' . $userData['username'] . '"' ?>);</script>
+
 </html>
