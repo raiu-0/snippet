@@ -1,12 +1,23 @@
 .post-window {
+    background-color: var(--clr-bg-lighter) !important;
     padding: 0;
     padding-bottom: 0.3rem;
     flex-direction: column !important;
     overflow-x: hidden !important;
 }
 
-.post-window img,
-.post-window video{
+.post-media-track{
+    top: 0;
+    left: 0;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    transform: translate(0, 0) !important;
+}
+
+.post-media-track img,
+.post-media-track video{
     width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
     height: auto !important;
 }
