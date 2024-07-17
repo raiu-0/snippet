@@ -15,8 +15,13 @@ const videoFormats = [
 const setupScrollMedia = () => {
     Array.from(document.getElementsByClassName('post-window')).forEach((postWindow) => {
         const track = postWindow.children[0];
+
+        if(track.offsetWidth <= postWindow.offsetWidth){
+            track.style.margin = 'auto';
+            track.style.left = '0';
+            return;
+        }
         window.addEventListener('mouseup', (e)=>{
-            console.log(e.target !== postWindow && e.target !== track)
             if(e.target !== postWindow && e.target !== track)
                 track.dataset.mouseDownAt = '0';
         })
@@ -32,7 +37,9 @@ const setupScrollMedia = () => {
             const percent = -(mouseDelta / maxDelta) * 100;
             let nextPercent = parseFloat(track.dataset.prevPercent || "0") + percent;
             nextPercent = Math.min(0, nextPercent);
-            nextPercent = Math.max(-100, nextPercent);
+            let imgPercent = nextPercent;
+            nextPercent = Math.max((-((track.offsetWidth - postWindow.offsetWidth + (0.04 * postWindow.offsetWidth)) / track.offsetWidth) * 100), nextPercent);
+            imgPercent = Math.max(-100, imgPercent);
             track.dataset.percent = nextPercent;
 
             track.animate({
@@ -41,8 +48,11 @@ const setupScrollMedia = () => {
 
             Array.from(track.children).forEach((media)=>{
                 media.animate({
-                    objectPosition: `${nextPercent + 100}% 50%`
+                    objectPosition: `${imgPercent + 100}% 50%`
                 }, {duration: 2000, fill: 'forwards'});
+                media.addEventListener('dragstart', (event) => {
+                    event.preventDefault();
+                });
             });
         }
         postWindow.onmouseup = e => {
