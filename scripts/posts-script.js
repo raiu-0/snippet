@@ -92,7 +92,7 @@ const getPosts = async (viewer, username = null) => {
     else
         postArea.innerHTML = `<div class="empty-results flex-col">
                 <img src="images/icons/sad-icon.png">
-                No interactions yet...
+                No posts yet...
             </div>`;
     if(username == null)
         setupScrollMedia();

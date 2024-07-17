@@ -336,6 +336,7 @@ h3.title {
 }
 
 #post-area {
+    flex-grow: 1;
     gap: 1rem;
 }
 
@@ -705,6 +706,7 @@ h3.title {
 }
 
 .empty-results{
+    user-select: none;
     justify-content: center;
     align-items: center;
     width: 100%;

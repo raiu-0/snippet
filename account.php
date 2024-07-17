@@ -30,7 +30,7 @@ if (is_null($userData) || count($userData) === 0)
 
 <body>
     <?php require 'utils/menuPanel.php'; ?>
-    <div class="content-panel">
+    <div class="content-panel flex-col">
         <div class="profile-frame flex-row">
             <div class="profile-picture-frame flex-col">
                 <img src="uploads/<?php echo $userData['picture'] ?>" alt="" id="profile-picture">
