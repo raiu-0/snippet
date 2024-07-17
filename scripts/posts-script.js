@@ -42,14 +42,14 @@ const setupScrollMedia = (isAccounts = false) => {
             imgPercent = Math.max(-100, imgPercent);
             track.dataset.percent = nextPercent;
 
-            if (!isAccounts)
+            // if (!isAccounts)
                 track.animate({
                     transform: `translate(${nextPercent}%, -50%)`
                 }, { duration: 2000, fill: 'forwards' });
-            else
-                track.animate({
-                    transform: `translate(${nextPercent}%, 0%)`
-                }, { duration: 2000, fill: 'forwards' });
+            // else
+            //     track.animate({
+            //         transform: `translate(${nextPercent}%, 0%)`
+            //     }, { duration: 2000, fill: 'forwards' });
 
             Array.from(track.children).forEach((media) => {
                 media.animate({

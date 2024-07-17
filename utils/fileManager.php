@@ -93,6 +93,8 @@ function uploadFiles($fileArray, $formats = acceptedMediaFormats, $goback=''){
 }
 
 function removeFile($filename){
+    if($filename === 'defaultPFP.png')
+        return;
     if(file_exists("uploads/$filename"))
         unlink("uploads/$filename");
 }

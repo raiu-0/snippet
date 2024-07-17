@@ -17,7 +17,7 @@ if (isset($_POST['save'])) {
 
     $error = [];
     $userData = [];
-    if (strlen($password) === 0)
+    if (strlen($_POST['password']) === 0)
         validate($fields, $error, $_POST, true, $userData, ['password']);
     else
         validate($fields, $error, $_POST, true, $userData);
