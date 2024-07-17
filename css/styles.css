@@ -268,6 +268,7 @@ h3.title {
     flex-grow: 1;
     background-color: var(--clr-bg-lighter);
     padding: 3rem;
+    overflow: hidden;
 }
 
 #user-name-display {
