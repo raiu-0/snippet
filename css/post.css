@@ -10,7 +10,7 @@
     top: 0;
     left: 0;
     flex-direction: column !important;
-    gap: 2rem !important;
+    gap: 1rem !important;
     transform: translate(0, 0) !important;
 }
 

@@ -12,17 +12,17 @@ const videoFormats = [
 ];
 
 
-const setupScrollMedia = () => {
+const setupScrollMedia = (isAccounts = false) => {
     Array.from(document.getElementsByClassName('post-window')).forEach((postWindow) => {
         const track = postWindow.children[0];
 
-        if(track.offsetWidth <= postWindow.offsetWidth){
+        if (track.offsetWidth <= postWindow.offsetWidth) {
             track.style.margin = 'auto';
             track.style.left = '0';
             return;
         }
-        window.addEventListener('mouseup', (e)=>{
-            if(e.target !== postWindow && e.target !== track)
+        window.addEventListener('mouseup', (e) => {
+            if (e.target !== postWindow && e.target !== track)
                 track.dataset.mouseDownAt = '0';
         })
         postWindow.onmousedown = e => {
@@ -42,14 +42,19 @@ const setupScrollMedia = () => {
             imgPercent = Math.max(-100, imgPercent);
             track.dataset.percent = nextPercent;
 
-            track.animate({
-                transform: `translate(${nextPercent}%, -50%)`
-            }, {duration: 2000, fill: 'forwards'});
+            if (!isAccounts)
+                track.animate({
+                    transform: `translate(${nextPercent}%, -50%)`
+                }, { duration: 2000, fill: 'forwards' });
+            else
+                track.animate({
+                    transform: `translate(${nextPercent}%, 0%)`
+                }, { duration: 2000, fill: 'forwards' });
 
-            Array.from(track.children).forEach((media)=>{
+            Array.from(track.children).forEach((media) => {
                 media.animate({
                     objectPosition: `${imgPercent + 100}% 50%`
-                }, {duration: 2000, fill: 'forwards'});
+                }, { duration: 2000, fill: 'forwards' });
                 media.addEventListener('dragstart', (event) => {
                     event.preventDefault();
                 });
@@ -82,8 +87,17 @@ const getPosts = async (viewer, username = null) => {
     data.forEach(e => {
         postData += constructPost(e, viewer);
     });
-    postArea.innerHTML = postData;
-    setupScrollMedia();
+    if (postData != '')
+        postArea.innerHTML = postData;
+    else
+        postArea.innerHTML = `<div class="empty-results flex-col">
+                <img src="images/icons/sad-icon.png">
+                No interactions yet...
+            </div>`;
+    if(username == null)
+        setupScrollMedia();
+    else
+        setupScrollMedia(true);
 }
 
 const constructPost = (e, viewer, jsonencoded = true, enablehyperlink = true) => {

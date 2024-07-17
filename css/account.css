@@ -100,3 +100,7 @@
 .not-followed {
     background-color: var(--clr-secondary);
 }
+
+.post-media-track {
+    transform: translate(0, 0);
+}
