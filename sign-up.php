@@ -56,14 +56,14 @@ if (isset($_POST['sign-up'])) {
             <form method="post" class="flex-col card" id="sign-up">
                 <h2 class="card-title">Sign-Up</h2>
                 <hr>
-                <input type="text" name="email" placeholder="Email" value="<?php printPOSTVal('email') ?>">
+                <input type="text" name="email" placeholder="Email" value="<?php printPOSTVal('email') ?>" spellcheck="false">
                 <?php printError('email') ?>
-                <input type="text" name="name" placeholder="Name" value="<?php printPOSTVal('name') ?>">
+                <input type="text" name="name" placeholder="Name" value="<?php printPOSTVal('name') ?>" spellcheck="false">
                 <?php printError('name') ?>
                 <input type="date" name="birthday" id="birthday" placeholder="Birthday"
                     onchange="showBirthdayPlaceholder(this);" value="<?php printPOSTVal('birthday') ?>">
                 <?php printError('birthday') ?>
-                <input type="text" name="username" placeholder="Username" value="<?php printPOSTVal('username') ?>">
+                <input type="text" name="username" placeholder="Username" value="<?php printPOSTVal('username') ?>" spellcheck="false">
                 <?php if (!printError('username')): ?>
                     <span class="input-guide">Usernames may only contain letters, numbers and underscores.</span>
                 <?php endif; ?>

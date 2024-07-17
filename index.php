@@ -67,7 +67,7 @@ if (isset($_POST['login'])) {
             <div class="flex-col wrapper card" id="login">
                 <form class="flex-col" id="login-form" method="post">
                     <input type="text" placeholder="Email / Username" name="identifier"
-                        value="<?php printPOSTVal('identifier') ?>">
+                        value="<?php printPOSTVal('identifier') ?>" spellcheck="false">
                     <?php printError('identifier') ?>
                     <input type="password" placeholder="Password" name="password"
                         value="<?php printPOSTVal('password') ?>">
