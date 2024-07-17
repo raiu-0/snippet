@@ -16,6 +16,7 @@ date_default_timezone_set('Asia/Hong_Kong');
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icons/snippet-icon.png">
 </head>
 
 <body>
@@ -26,7 +27,7 @@ date_default_timezone_set('Asia/Hong_Kong');
         require 'utils/dateManager.php';
         $con = startDBConnection();
         $result = getInteractions($con, $_SESSION['user']);
-        if(count($result) > 0):
+        if (count($result) > 0):
             foreach ($result as $interaction): ?>
                 <div class="interaction flex-row">
                     <div class="interaction-profile-picture">
@@ -43,10 +44,10 @@ date_default_timezone_set('Asia/Hong_Kong');
                             if ($interaction['type'] === 'Comment') {
                                 $content = '<b>' . $interaction['name'] . '</b> commented on your post.';
                                 $content .= '<div class="interaction-comment">"' . $interaction['content'] . '"</div>';
-                                $hyperlink = 'post.php?id='. $interaction['post_id'];
+                                $hyperlink = 'post.php?id=' . $interaction['post_id'];
                             } else if ($interaction['type'] === 'Like') {
                                 $content = '<b>' . $interaction['name'] . '</b> liked your post.';
-                                $hyperlink = 'post.php?id='. $interaction['post_id'];
+                                $hyperlink = 'post.php?id=' . $interaction['post_id'];
                             } else if ($interaction['type'] === 'Follow') {
                                 if (checkIfFollowBack($con, $_SESSION['user'], $interaction['username']))
                                     $content = '<b>' . $interaction['name'] . '</b> followed you back.';
@@ -67,7 +68,7 @@ date_default_timezone_set('Asia/Hong_Kong');
                 <img src="images/icons/sad-icon.png">
                 No interactions yet...
             </div>
-        <?php
+            <?php
         endif;
         endDBConnection($con);
         ?>
