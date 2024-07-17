@@ -152,12 +152,10 @@ function decreaseUserFollow($connection, $username, $field)
     $update->close();
 }
 
-function getPosts($connection, $usernames, $limit = 10)
+function getPosts($connection, $usernames)
 {
     $usernames = array_map('addQuotes', $usernames);
     $sql = "SELECT * FROM posts WHERE username IN (" . implode(', ', $usernames) . ") ORDER BY datetime DESC";
-    if ($limit > 0)
-        $sql .= " LIMIT $limit";
     $selection = $connection->prepare($sql);
     $selection->execute();
     $result = $selection->get_result()->fetch_all(MYSQLI_ASSOC);
