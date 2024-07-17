@@ -1,4 +1,5 @@
 const postArea = document.getElementById('post-area');
+const contentPanel = document.getElementsByClassName('content-panel')[0];
 
 const videoFormats = [
     'avi',
@@ -10,6 +11,47 @@ const videoFormats = [
     'ts'
 ];
 
+
+const setupScrollMedia = () => {
+    Array.from(document.getElementsByClassName('post-window')).forEach((postWindow) => {
+        const track = postWindow.children[0];
+        window.addEventListener('mouseup', (e)=>{
+            console.log(e.target !== postWindow && e.target !== track)
+            if(e.target !== postWindow && e.target !== track)
+                track.dataset.mouseDownAt = '0';
+        })
+        postWindow.onmousedown = e => {
+            track.dataset.mouseDownAt = e.clientX;
+        }
+        postWindow.onmousemove = e => {
+            if (track.dataset.mouseDownAt === '0' || track.dataset.mouseDownAt == null)
+                return;
+            const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX;
+            const maxDelta = postWindow.offsetWidth / 2;
+
+            const percent = -(mouseDelta / maxDelta) * 100;
+            let nextPercent = parseFloat(track.dataset.prevPercent || "0") + percent;
+            nextPercent = Math.min(0, nextPercent);
+            nextPercent = Math.max(-100, nextPercent);
+            track.dataset.percent = nextPercent;
+
+            track.animate({
+                transform: `translate(${nextPercent}%, -50%)`
+            }, {duration: 2000, fill: 'forwards'});
+
+            Array.from(track.children).forEach((media)=>{
+                media.animate({
+                    objectPosition: `${nextPercent + 100}% 50%`
+                }, {duration: 2000, fill: 'forwards'});
+            });
+        }
+        postWindow.onmouseup = e => {
+            track.dataset.mouseDownAt = '0';
+            track.dataset.prevPercent = track.dataset.percent;
+        }
+    });
+}
+
 const getPosts = async (viewer, username = null) => {
     const request = new Request('api/postFeed.php', {
         method: 'POST',
@@ -17,21 +59,21 @@ const getPosts = async (viewer, username = null) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            username: username
+            username: username,
+            limit: 10
         })
     });
 
     const response = await fetch(request);
     const text = await response.text();
-    console.log(text);
     const data = JSON.parse(text);
-    console.log(data);
 
     let postData = '';
     data.forEach(e => {
         postData += constructPost(e, viewer);
     });
     postArea.innerHTML = postData;
+    setupScrollMedia();
 }
 
 const constructPost = (e, viewer, jsonencoded = true, enablehyperlink = true) => {
@@ -40,14 +82,16 @@ const constructPost = (e, viewer, jsonencoded = true, enablehyperlink = true) =>
     }
     let postFiles = '';
     if (e.postFiles.length !== 0) {
-        postFiles += '<div class="post-window flex-row">';
+        postFiles += `<div class="post-window">
+                        <div class="post-media-track flex-row">`;
         e.postFiles.forEach(file => {
             if (videoFormats.includes(file.split('.').pop()))
                 postFiles += `<video src="uploads/${file}" controls></video>`;
             else
                 postFiles += `<img src="uploads/${file}">`
         });
-        postFiles += '</div>';
+        postFiles += `  </div>
+                    </div>`;
     }
     postData = `
         <div class="post-frame flex-col">
@@ -120,7 +164,6 @@ const showComments = async (element, id, limit, viewer) => {
 
     const response = await fetch(request);
     const text = await response.text();
-    console.log(text);
     const data = JSON.parse(text);
 
     let comments = '';
@@ -129,7 +172,7 @@ const showComments = async (element, id, limit, viewer) => {
         for (let i = 0; i < limit && i < data.length; i++) {
             e = data[i];
             delButton = '';
-            if(viewer === e.username)
+            if (viewer === e.username)
                 delButton = `<button class="flex-row" onclick="deleteComment(this, '${e.comment_id}')">
                                 <img src="images/icons/x-icon.png">
                                 Delete
@@ -144,7 +187,6 @@ const showComments = async (element, id, limit, viewer) => {
                         <div class="comment-bubble flex-col">
                             <div class="comment-author"><a href="account.php?user=${e.username}">${e.name}</a></div>
                             <div class="comment-text">${e.comment}</div>
-                            
                         </div>
                         <div class="comment-time">${e.datetime}</div>
                     </div>
@@ -190,7 +232,6 @@ const submitComment = async (element, id, viewer) => {
 
     const response = await fetch(request);
     const text = await response.text();
-    console.log(text);
 
     if (text === 'Success') {
         const interactionPanel = element.parentNode.previousElementSibling.children[1];
@@ -220,10 +261,8 @@ const likePost = async (element, id) => {
 
     const response = await fetch(request);
     const text = await response.text();
-    console.log(text);
     const data = JSON.parse(text);
     let count = parseInt(element.children[1].innerText);
-    console.log(element);
     data.status === 'liked' ? count++ : count--;
     element.innerHTML = `<img src="images/icons/heart-` + (data.status === 'liked' ? '' : 'no-') + `fill-icon.png"><div>${count}</div>`;
 }
@@ -266,7 +305,7 @@ const deleteComment = async (e, id) => {
         let child = e.parentNode.parentNode;
         let parent = child.parentNode;
         parent.removeChild(child);
-        if(parent.childElementCount === 0){
+        if (parent.childElementCount === 0) {
             let interactioncontrols = parent.nextElementSibling;
             interactioncontrols.removeChild(interactioncontrols.children[1]);
             interactioncontrols.removeChild(interactioncontrols.children[1]);
