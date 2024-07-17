@@ -28,7 +28,7 @@ if (isset($_POST['sign-up'])) {
             insertInto($con, 'users', $username, $password, $email, $name, $birthday, 'defaultPFP.png', 0, 0);
 
         endDBConnection($con);
-        if(count($error) === 0)
+        if (count($error) === 0)
             header('location: index.php');
     }
 }
@@ -44,6 +44,7 @@ if (isset($_POST['sign-up'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icons/snippet-icon.png">
 </head>
 
 <body>
