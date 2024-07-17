@@ -6,7 +6,8 @@ require 'utils/dateManager.php';
 require 'utils/validateManager.php';
 require 'utils/dbManager.php';
 
-function extractFiles($element){
+function extractFiles($element)
+{
     return $element['filename'];
 }
 
@@ -45,6 +46,7 @@ endDBConnection($con);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icons/snippet-icon.png">
 </head>
 
 <body>
@@ -59,10 +61,10 @@ endDBConnection($con);
 
 <script src="scripts/posts-script.js"></script>
 <script>
-    document.getElementById('post-area').innerHTML = constructPost(<?php echo "'" . json_encode($post) . "', '" . $_SESSION['user']."'".', false, false'; ?>);
-    showComments(document.getElementsByClassName('show-comments flex-row')[0], <?php echo $post['id'] ?>, 10);
+    document.getElementById('post-area').innerHTML = constructPost(<?php echo "'" . json_encode($post) . "', '" . $_SESSION['user'] . "'" . ', false, false'; ?>);
     document.getElementsByClassName('delete-post-btn')[0].addEventListener('click', () => {
         window.location.replace('home.php');
     })
 </script>
+
 </html>
