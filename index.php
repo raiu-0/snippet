@@ -5,7 +5,7 @@
 require 'utils/validateManager.php';
 
 session_start();
-if(isset($_SESSION['user'], $_SESSION['name'], $_SESSION['picture']))
+if (isset($_SESSION['user'], $_SESSION['name'], $_SESSION['picture']))
     header('location: home.php');
 
 $fields = ['identifier', 'password'];
@@ -25,8 +25,8 @@ if (isset($_POST['login'])) {
         endDBConnection($con);
         if (mysqli_num_rows($result) !== 0) {
             $result = $result->fetch_assoc();
-            if (password_verify($password, $result['password'])) { 
-                if(password_needs_rehash($result['password'], PASSWORD_DEFAULT)){
+            if (password_verify($password, $result['password'])) {
+                if (password_needs_rehash($result['password'], PASSWORD_DEFAULT)) {
                     $con = startDBConnection();
                     updateProfile($con, $result['username'], ['password' => password_hash($password, PASSWORD_DEFAULT)]);
                     endDBConnection($con);
@@ -55,6 +55,7 @@ if (isset($_POST['login'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icons/snippet-icon.png">
 </head>
 
 <body>
@@ -65,9 +66,11 @@ if (isset($_POST['login'])) {
         <div class="flex-col wrapper">
             <div class="flex-col wrapper card" id="login">
                 <form class="flex-col" id="login-form" method="post">
-                    <input type="text" placeholder="Email / Username" name="identifier" value="<?php printPOSTVal('identifier') ?>">
+                    <input type="text" placeholder="Email / Username" name="identifier"
+                        value="<?php printPOSTVal('identifier') ?>">
                     <?php printError('identifier') ?>
-                    <input type="password" placeholder="Password" name="password" value="<?php printPOSTVal('password') ?>">
+                    <input type="password" placeholder="Password" name="password"
+                        value="<?php printPOSTVal('password') ?>">
                     <?php printError('password') ?>
                     <button id="login-button" name="login">Login</button>
                 </form>
