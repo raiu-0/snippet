@@ -268,7 +268,6 @@ h3.title {
     flex-grow: 1;
     background-color: var(--clr-bg-lighter);
     padding: 3rem;
-    /* border-left: 5px solid var(--clr-primary); */
 }
 
 #user-name-display {
@@ -401,19 +400,30 @@ h3.title {
 }
 
 .post-window {
-    /* border-radius: 10px; */
-    background-color: var(--clr-bg-lighter);
-    /* margin-top: 0.2rem; */
-    padding: 1rem;
-    gap: 1rem;
-    width: 100%;
-    overflow-x: auto;
+    background-color: var(--clr-neutral);
+    overflow: hidden;
+    margin: 0;
+    position: relative;
+    padding: 2rem 0;
 }
 
-.post-window img,
-.post-window video {
-    margin: auto;
-    height: 20rem;
+.post-media-track {
+    width: fit-content;
+    gap: 1rem;
+    position: relative;
+    left: 2%;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.post-media-track > img,
+.post-media-track > video{
+    user-select: none;
+    height: 30rem;
+    width: 23rem;
+    object-fit: cover;
+    object-position: 100% 50%;
+    -webkit-user-drag: none;
 }
 
 .comment-box {
